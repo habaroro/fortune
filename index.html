@@ -3,188 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>지니의 하루 주역 타로</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+    <title>지니의 주역 타로</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <style>
-        /* [테마] 딥 미드나잇 & 럭셔리 골드 */
-        :root {
-            --bg-deep: #0f0c29;
-            --bg-gradient: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-            --gold-gradient: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --gold-border: #d4af37; 
-            --glass-card: rgba(16, 18, 27, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-sub: #cfd8dc;
-        }
-
+        /* [디자인] 차분한 회색 배경 */
         body { 
             font-family: 'Gowun Dodum', sans-serif; 
-            background-color: #0f0c29;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
-                linear-gradient(to bottom, rgba(15, 12, 41, 0.9), rgba(36, 36, 62, 0.9)),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            color: var(--text-main); 
-            text-align: center; 
-            padding: 15px; margin: 0; 
-            min-height: 100vh; overflow-x: hidden; 
-            -webkit-tap-highlight-color: transparent; 
+            background: radial-gradient(circle, #f5f5f5 0%, #cfcfcf 100%); 
+            color: #333; text-align: center; padding: 20px; margin: 0; 
+            min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; 
         }
+        .container { max-width: 450px; margin: 0 auto; position: relative; z-index: 10; }        
+        #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
-        #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .container { max-width: 500px; margin: 0 auto; position: relative; z-index: 10; padding-bottom: 60px;}
-
-        h1 {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 2rem;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 4px 12px rgba(0,0,0,0.3);
-            letter-spacing: -1px;
-        }
-
-        .subtitle { font-size: 1rem; color: #aab; margin-bottom: 30px; font-weight: 300; letter-spacing: 1px; }
-
-        /* [카드 스타일] */
-        .card-box { perspective: 1000px; cursor: pointer; position: relative; }
+        /* [디자인] 금색 테두리 카드 */
+        .card-box { width: 310px; height: 460px; margin: 20px auto; perspective: 1500px; cursor: pointer; }
         .card-inner { 
             width: 100%; height: 100%; position: relative; 
-            transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1); 
-            border-radius: 12px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.2); 
+            border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
         }
         .card-inner.flipped { transform: rotateY(180deg); }
         .card-face { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            border-radius: 12px; display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; box-sizing: border-box; 
+            border-radius: 18px; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; border: 5px solid #d4af37; box-sizing: border-box; 
         }
+        .card-front { background: #3e2723; color: #d4af37; }
+        .card-front .mark { font-size: 5rem; filter: drop-shadow(0 0 10px rgba(212,175,55,0.4)); }
+        .card-back { background: #ffffff; transform: rotateY(180deg); overflow: hidden; }
+        .card-back img { width: 92%; height: 92%; object-fit: contain; }
 
-        .card-front { 
-            background-color: #1a1a2e;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
-                repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px);
-            border: 1px solid var(--gold-border);
+        /* [디자인] 결과 리포트 스타일 */
+        #result-area { 
+            margin-top: 15px; text-align: left; background: #fff; padding: 10px; 
+            border-radius: 20px; display: none; animation: slideUp 0.5s ease-out; 
+            color: #444; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #d4af37;
         }
-        .card-front .mark { 
-            font-size: 2.8rem; 
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
-            opacity: 0.9;
-        }
-        .card-back { background: #fff; transform: rotateY(180deg); overflow: hidden; border: 3px solid var(--gold-border); }
-        .card-back img { width: 100%; height: 100%; object-fit: contain; }
+        .res-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .res-name { font-size: 1.5rem; font-weight: bold; color: #5d4037; }
+        .res-section { margin-bottom: 15px; }
+        .res-label { font-weight: bold; color: #d4af37; font-size: 0.9rem; margin-bottom: 3px; display: flex; align-items: center; }
+        .res-label::before { content: '◈'; margin-right: 6px; font-size: 0.7rem; }
+        .res-content { font-size: 1rem; line-height: 1.6; padding-left: 15px; color: #333; }
+        .total-highlight { color: #b71c1c; font-weight: bold; background: #fffde7; padding: 10px; border-radius: 8px; }
 
-        .total-card-wrapper { margin: 15px 0 15px 0; display: flex; flex-direction: column; align-items: center; }
-        .total-card-box { width: 180px; height: 300px; }
-        .total-card-box .card-front .mark { font-size: 5rem; }
+        /* [추가] 행운의 아이템 영역 */
+        .lucky-box { display: flex; justify-content: space-around; margin-top: 10px; padding-top: 15px; border-top: 1px dashed #ddd; }
+        .lucky-item { text-align: center; font-size: 0.85rem; color: #666; }
+        .lucky-val { display: block; font-size: 1.1rem; font-weight: bold; color: #5d4037; margin-top: 5px; }
 
-        .card-wrapper { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; padding: 0 10px; }
-        .card-container { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .time-label { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; color: #b0bec5; margin-bottom: 10px; font-weight: 700; }
-        .small-card-box { width: 100%; aspect-ratio: 2/3.2; max-width: 105px; } 
-
+        /* 금색 입체 버튼 */
         .draw-btn { 
-            background: var(--gold-gradient);
-            color: #1a1a2e; border: none; padding: 18px 0; width: 90%; 
-            border-radius: 50px; 
-            font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; 
-            box-shadow: 0 5px 20px rgba(180, 136, 17, 0.3); 
-            margin-top: 10px; transition: all 0.3s ease;
-            position: relative; overflow: hidden;
+            background: linear-gradient(to bottom, #d4af37 0%, #aa8a2e 100%); 
+            color: #fff; border: none; padding: 15px 45px; border-radius: 50px; 
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; 
+            margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            -webkit-appearance: none; transition: 0.3s;
         }
-        .draw-btn::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
-        }
-        .draw-btn:active { transform: scale(0.98); }
-        .draw-btn:hover::after { left: 100%; }
+        .draw-btn:active { transform: scale(0.95); }
 
-        /* [결과 리포트] */
-        #result-area { display: none; margin-top: 40px; animation: slideUp 0.7s cubic-bezier(0.25, 1, 0.5, 1); padding-bottom: 40px;}
-        .report-card {
-            background: var(--glass-card);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border); border-left: 4px solid #d4af37;
-            border-radius: 12px; padding: 25px; margin-bottom: 20px;
-            text-align: left; color: var(--text-sub);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            position: relative; overflow: hidden;
-        }
-        .report-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%); pointer-events: none;
-        }
-        .report-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px;
-            position: relative; z-index: 1;
-        }
-        .report-title { font-family: 'Noto Serif KR', serif; font-size: 1.15rem; color: #fff; display: flex; align-items: center; font-weight: 700; }
-        .report-title span { margin-right: 8px; font-size: 1.2rem; }
-        
-        .weather-badge { 
-            background: rgba(0,0,0,0.4); border: 1px solid rgba(212,175,55,0.3);
-            padding: 5px 12px; border-radius: 30px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; color: #d4af37;
-        }
-        
-        .report-body h3 { 
-            font-family: 'Noto Serif KR', serif; font-size: 1.25rem; 
-            background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 0 0 15px 0; letter-spacing: -0.5px; position: relative; z-index: 1;
-        }
-        .report-detail { font-size: 0.95rem; line-height: 1.7; margin-bottom: 8px; color: #ccc; position: relative; z-index: 1; display: flex; }
-        .report-detail strong { color: #f7e9aa; min-width: 70px; display: inline-block; font-weight: 500; }
-        .grade-tag { font-size: 0.75rem; color: #aaa; margin-right: 4px; font-weight: normal; }
-
-        /* [행운 정보 섹션] */
-        .lucky-section {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px dashed rgba(212, 175, 55, 0.3);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: relative; z-index: 1;
-        }
-        .lucky-item {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #e0e0e0;
-        }
-        .lucky-label {
-            display: block;
-            font-size: 0.8rem;
-            color: #d4af37;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-        .lucky-value {
-            font-family: 'Noto Serif KR', serif;
-            font-weight: bold;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .color-dot {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 0 5px rgba(255,255,255,0.2);
-        }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -192,160 +71,110 @@
 <canvas id="particleCanvas"></canvas>
 
 <div class="container">
-    <h1>지니의 주역타로 운세</h1>
-    <div class="subtitle">차분하게 카드를 한장씩 클릭해 주세요.</div>
-    
-    <div class="total-card-wrapper">
-        <div class="time-label" style="color: #d4af37;">✨ 오늘의 총운</div>
-        <div class="card-box total-card-box" onclick="handleCardClick(0)">
-            <div id="cardInner0" class="card-inner">
-                <div class="card-face card-front"><div class="mark">☯</div></div>
-                <div class="card-face card-back"><img id="cardImage0" src=""></div>
+    <h1 style="color: #5d4037;">오늘의 주역 운세</h1>
+    <p style="color: #888;">마음을 차분히 하고 오늘의 운세를 뽑아보세요.</p>
+    <div class="card-box" onclick="handleFlip()">
+        <div id="cardInner" class="card-inner">
+          <div class="card-face card-front">
+                <div class="mark">☯</div>
+                <p style="letter-spacing: 1px;">카드를 클릭하세요.</p>
+            </div>
+            <div class="card-face card-back">
+                <img id="cardImage" src="" alt="타로 카드">
             </div>
         </div>
     </div>
 
-    <div class="card-wrapper">
-        <div class="card-container">
-            <div class="time-label">☀️ 아침</div>
-            <div class="card-box small-card-box" onclick="handleCardClick(1)">
-                <div id="cardInner1" class="card-inner">
-                    <div class="card-face card-front"><div class="mark">☯</div></div>
-                    <div class="card-face card-back"><img id="cardImage1" src=""></div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="time-label">🕛 점심</div>
-            <div class="card-box small-card-box" onclick="handleCardClick(2)">
-                <div id="cardInner2" class="card-inner">
-                    <div class="card-face card-front"><div class="mark">☯</div></div>
-                    <div class="card-face card-back"><img id="cardImage2" src=""></div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="time-label">🌙 저녁</div>
-            <div class="card-box small-card-box" onclick="handleCardClick(3)">
-                <div id="cardInner3" class="card-inner">
-                    <div class="card-face card-front"><div class="mark">☯</div></div>
-                    <div class="card-face card-back"><img id="cardImage3" src=""></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button class="draw-btn" id="mainBtn" onclick="handleMainAction()">운세 확인하기</button>
+    <button class="draw-btn" id="mainBtn" onclick="handleMainAction()">오늘의 운세 뽑기</button>
 
     <div id="result-area">
-        <div id="reportTotal" class="report-card"></div> 
-        <div id="reportMorning" class="report-card"></div>
-        <div id="reportAfternoon" class="report-card"></div>
-        <div id="reportEvening" class="report-card"></div>
+        <div class="res-header"><div id="resTitle" class="res-name"></div></div>
+        <div class="res-section">
+            <div class="res-label">오늘의 핵심 총운</div>
+            <div id="resTotal" class="res-content total-highlight"></div>
+        </div>
+        <div class="res-section"><div class="res-label">비즈니스 / 성공</div><div id="resBus" class="res-content"></div></div>
+        <div class="res-section"><div class="res-label">연애 / 인간관계</div><div id="resLov" class="res-content"></div></div>
+        <div class="res-section"><div class="res-label">건강 / 심리</div><div id="resHea" class="res-content"></div></div>
+        
+        <div class="lucky-box">
+            <div class="lucky-item">🎨 행운의 색상 <span id="luckyColor" class="lucky-val"></span></div>
+            <div class="lucky-item">🔢 행운의 숫자 <span id="luckyNum" class="lucky-val"></span></div>
+        </div>
     </div>
 </div>
 
 <script>
     const tarotData = [
-        { no: 1, name: "1. 중천건", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/oEjEsdS.png", total: "강력한 창조와 발전의 시기", bus: "리더십을 발휘해 추진할 때", lov: "당당하고 열정적인 관계", hea: "에너지가 넘치나 고혈압 주의" },
-        { no: 2, name: "2. 중지곤", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/CRwglhQ.png", total: "포용하고 수용할 때 길함", bus: "조력자를 만나 내실을 다짐", lov: "부드럽고 헌신적인 사랑", hea: "소화기 계통 및 피로 관리" },
-        { no: 3, name: "3. 수뢰준", grade: "4대난괘", isDestiny: false, baseScore: 15, img: "https://imgur.com/Wy3tXp7.png", total: "시작의 난관, 인내가 필요", bus: "신규 창업은 신중히 검토", lov: "오해가 생기기 쉬운 시기", hea: "기력 저하, 충분한 휴식 요망" },
-        { no: 4, name: "4. 산수몽", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/CFYsfx1.png", total: "배움과 지도가 필요한 시기", bus: "전문가의 자문을 구할 것", lov: "미숙한 관계, 대화가 필요", hea: "안과 질환 및 신경성 두통" },
-        { no: 5, name: "5. 수천수", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/D4UBH55.png", total: "때를 기다리는 여유가 필수", bus: "성급한 투자는 금물, 대기", lov: "서두르면 망침, 천천히 접근", hea: "신장 및 방광 건강 유의" },
-        { no: 6, name: "6. 천수송", grade: "소흉", isDestiny: false, baseScore: 35, img: "https://imgur.com/y3CKL2O.png", total: "갈등과 다툼을 경계할 것", bus: "계약 및 소송 시 타협 필요", lov: "말다툼 주의, 양보가 보약", hea: "스트레스성 질환, 화병 주의" },
-        { no: 7, name: "7. 지수사", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/a6kkJbS.png", total: "조직력과 규율이 중요한 시기", bus: "경쟁에서 승리하나 책임 가중", lov: "주도권 싸움 경계", hea: "근육통 및 타박상 주의" },
-        { no: 8, name: "8. 수지비", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/H0UswhF.png", total: "화합과 협력이 열쇠인 시기", bus: "협업이나 파트너십에 최적", lov: "깊은 유대감, 결혼운 상승", hea: "전반적인 컨디션 양호" },
-        { no: 9, name: "9. 풍천소축", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/k6krlAV.png", total: "작은 성취, 큰 일은 보류", bus: "자금 흐름이 잠시 정체됨", lov: "사소한 정에 이끌릴 때", hea: "호흡기 및 기관지 관리" },
-        { no: 10, name: "10. 천택리", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/FnOYWNQ.png", total: "예의를 갖춰 위기를 극복", bus: "윗사람의 눈 밖에 나지 말 것", lov: "조심스러운 짝사랑, 예의 중시", hea: "다리 부상 및 보행 주의" },
-        { no: 11, name: "11. 지천태", grade: "대길", isDestiny: false, baseScore: 95, img: "https://imgur.com/1AHyrXY.png", total: "태평성대, 만사가 형통함", bus: "소통이 잘 되고 거래가 성사됨", lov: "깊은 신뢰와 화합의 시기", hea: "심신이 안정되고 쾌차함" },
-        { no: 12, name: "12. 천지비", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/TF90qV9.png", total: "운세 정체, 소통 부재", bus: "계약 파기나 구설수 주의", lov: "서로 등 돌리는 형국, 인내", hea: "가슴 답답함, 울화병 주의" },
-        { no: 13, name: "13. 천화동인", grade: "대길", isDestiny: false, baseScore: 95, img: "https://imgur.com/fqPVwBS.png", total: "협동과 동료애가 빛남", bus: "공동 투자나 팀워크에 최적", lov: "뜻이 맞는 인연을 만남", hea: "전염성 질환 주의, 컨디션 보통" },
-        { no: 14, name: "14. 화천대유", grade: "소길", isDestiny: true, baseScore: 82, img: "https://imgur.com/rvh56NE.png", total: "풍요로움, 큰 결실의 때", bus: "최고의 금전운, 사업 확장", lov: "매력이 넘치고 인기 상승", hea: "시력 보호, 과로로 인한 현기증" },
-        { no: 15, name: "15. 지산겸", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/erUJddR.png", total: "겸손이 복을 부르는 시기", bus: "양보하면 나중에 더 큰 이득", lov: "조용한 사랑, 예의 있는 관계", hea: "허리 및 척추 건강 유의" },
-        { no: 16, name: "16. 뇌지예", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/U6iuMKV.png", total: "즐겁고 희망찬 소식", bus: "새로운 기획이나 축제 분위기", lov: "첫눈에 반하거나 즐거운 데이트", hea: "간 기능 활성화, 과음 주의" },
-        { no: 17, name: "17. 택뢰수", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/KITw1B5.png", total: "순리를 따르면 이로움", bus: "흐름을 타고 남을 따를 때", lov: "상대를 존중하면 사랑받음", hea: "발목 부상 및 다리 통증 주의" },
-        { no: 18, name: "18. 산풍고", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/LC9aPBL.png", total: "낡은 것을 고쳐야 함", bus: "내부 개혁, 수리, 재정비", lov: "숨겨진 문제 해결이 급선무", hea: "배탈, 식중독 등 장 질환 주의" },
-        { no: 19, name: "19. 지택임", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/Ulc0hvE.png", total: "운세 상승, 기회가 옴", bus: "적극적인 홍보와 영업 활성화", lov: "적극적으로 대시할 시기", hea: "피부 질환이나 알레르기 주의" },
-        { no: 20, name: "20. 풍지관", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/Y8bLDPz.png", total: "관망하고 성찰하는 시기", bus: "계획 수정, 시장 조사가 우선", lov: "짝사랑이나 멀리서 지켜봄", hea: "어지럼증, 빈혈 관리 필요" },
-        { no: 21, name: "21. 화뢰서합", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/pASEHQg.png", total: "방해물을 제거할 시기", bus: "법률 문제 해결, 단호한 결정", lov: "오해를 풀기 위한 대화 필수", hea: "치아 및 구강 질환 주의" },
-        { no: 22, name: "22. 산화비", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/Lbpr91Z.png", total: "겉치레보다 내실이 중요", bus: "이미지 마케팅은 좋으나 실속 부족", lov: "화려한 외모보다 마음을 볼 것", hea: "피부 미용 및 성형 부작용 주의" },
-        { no: 23, name: "23. 산지박", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/yiUZbjU.png", total: "불리한 상황, 몸 사릴 때", bus: "자금 악화, 현상 유지에 집중", lov: "이별수나 배신감이 들 수 있음", hea: "면역력 급감, 절대 안정 필요" },
-        { no: 24, name: "24. 지뢰복", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/Iq2n24U.png", total: "회복과 반전의 기회", bus: "실패한 일의 재기, 복귀운", lov: "옛 연인과의 재회 가능성", hea: "지병의 회복, 기력 보충" },
-        { no: 25, name: "25. 천뢰무망", grade: "평괘", isDestiny: true, baseScore: 55, img: "https://imgur.com/j1Nu72f.png", total: "요행을 바라지 마라", bus: "정직한 노력이 보상받음", lov: "가식 없는 태도가 호감을 삼", hea: "갑작스러운 사고나 타박상 주의" },
-        { no: 26, name: "26. 산천대축", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/RpAkcSK.png", total: "큰 힘을 비축하는 시기", bus: "큰 계약이나 자금 확보 가능", lov: "진중하고 무거운 사랑", hea: "체력 보강, 보약이 필요한 때" },
-        { no: 27, name: "27. 산뢰이", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/a6Fwbdw.png", total: "말과 음식의 절제", bus: "언론, 교육, 요식업에 길함", lov: "말실수로 다툴 수 있으니 조심", hea: "비만이나 식이장애 관리" },
-        { no: 28, name: "28. 택풍대과", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/3N9iYOs.png", total: "책임감이 무거운 상태", bus: "자금 압박, 무리한 확장은 금물", lov: "감당하기 힘든 연애 감정", hea: "골절이나 뼈 관련 질환 주의" },
-        { no: 29, name: "29. 중수감", grade: "4대난괘", isDestiny: false, baseScore: 15, img: "https://imgur.com/H3WHJCW.png", total: "첩첩산중 위기 상황", bus: "사기 및 손재수 주의, 자숙", lov: "삼각관계나 복잡한 고민", hea: "신장, 방광, 산부인과 질환" },
-        { no: 30, name: "30. 중화리", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/4uzTP81.png", total: "열정과 명예의 상승", bus: "예술, 창작, 자격증 취득 길함", lov: "불같은 사랑, 금방 식을 수도", hea: "심장 및 화끈거리는 열병 주의" },
-        { no: 31, name: "31. 택산함", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/UmX3IG5.png", total: "마음이 통하는 감응의 시기", bus: "파트너십, 제휴 계약에 아주 길함", lov: "연애운 최고, 깊은 교감과 설렘", hea: "혈액 순환 및 심리적 안정" },
-        { no: 32, name: "32. 뇌풍항", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/r7Cu9Yc.png", total: "꾸준함과 한결같은 태도", bus: "장기 프로젝트나 기존 사업 유지", lov: "안정적인 결합, 변치 않는 사랑", hea: "만성 피로 관리, 규칙적 생활" },
-        { no: 33, name: "33. 천산둔", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/lHtNwrH.png", total: "물러나서 몸을 피할 때", bus: "무리한 확장보다 자산 보호", lov: "잠시 거리를 두는 것이 현명함", hea: "스트레스 관리, 명상 필요" },
-        { no: 34, name: "34. 뇌천대장", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/HtxWKrV.png", total: "기세가 당당하고 힘이 넘침", bus: "과감한 추진, 승부사 기질 발휘", lov: "주도적인 연애, 열정적인 관계", hea: "근육질환 및 넘치는 에너지 조절" },
-        { no: 35, name: "35. 화지진", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/qncGUnv.png", total: "밝은 미래로 나아가는 전진", bus: "승진, 당선, 사업의 급속한 성장", lov: "주위에 소문날 만큼 좋은 인연", hea: "활력이 넘치고 안색이 좋아짐" },
-        { no: 36, name: "36. 지화명이", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/4EedukZ.png", total: "어둠 속에서 빛을 감출 때", bus: "실력을 숨기고 때를 기다릴 것", lov: "마음 고생, 짝사랑의 아픔", hea: "불면증, 우울감, 시력 저하 주의" },
-        { no: 37, name: "37. 풍화가인", grade: "평괘", isDestiny: true, baseScore: 55, img: "https://imgur.com/R6LWc0V.png", total: "집안이 화목해야 만사형통", bus: "내부 결속, 가업 승계에 유리", lov: "가족 같은 편안함, 결혼운", hea: "여성 질환 및 가슴 답답함 관리" },
-        { no: 38, name: "38. 화택규", grade: "소흉", isDestiny: false, baseScore: 35, img: "https://imgur.com/eIRW9tj.png", total: "의견 대립과 소외감", bus: "동업자와의 갈등 주의, 독자 노선", lov: "서로 어긋남, 사소한 오해 주의", hea: "안과 질환 및 신경과민" },
-        { no: 39, name: "39. 수산건", grade: "4대난괘", isDestiny: false, baseScore: 15, img: "https://imgur.com/y7S2NWq.png", total: "눈길에 발이 묶인 형국", bus: "진행 중인 일의 일시 중단", lov: "고독함, 진전 없는 관계", hea: "다리 통증 및 관절염 주의" },
-        { no: 40, name: "40. 뇌수해", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/8ds45Uy.png", total: "꽁꽁 얼었던 문제가 풀림", bus: "자금난 해결, 곤란했던 일의 종결", lov: "갈등 해소, 화해의 타이밍", hea: "질병의 쾌차, 쌓인 독소 배출" },
-        { no: 41, name: "41. 산택손", grade: "소흉", isDestiny: false, baseScore: 35, img: "https://imgur.com/laJLUsA.png", total: "덜어내어 내실을 다질 때", bus: "당장의 지출은 있으나 나중에 이득", lov: "헌신적인 태도가 상대의 마음을 얻음", hea: "다이어트나 해독 요법에 길함" },
-        { no: 42, name: "42. 풍뢰익", grade: "소길", isDestiny: true, baseScore: 82, img: "https://imgur.com/OMAvSUF.png", total: "도움을 받아 크게 발전함", bus: "투자 유치 성공, 이익의 극대화", lov: "서로에게 도움이 되는 발전적 관계", hea: "기운이 보강되고 체력이 좋아짐" },
-        { no: 43, name: "43. 택천쾌", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/zfmi71l.png", total: "단호한 결단이 필요한 때", bus: "부정적인 요소 척결, 공정한 처리", lov: "맺고 끊음이 확실해야 함", hea: "비뇨기 계통 및 혈압 관리" },
-        { no: 44, name: "44. 천풍구", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/BZYzVRf.png", total: "뜻밖의 만남, 유혹 주의", bus: "갑작스러운 제안, 꼼수 경계", lov: "매혹적이지만 위험한 인연", hea: "유행성 질환 및 자궁 질환 주의" },
-        { no: 45, name: "45. 택지취", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/c2ctXl0.png", total: "사람과 재물이 모여듬", bus: "네트워크 형성, 모임에서 기회 찾기", lov: "인기 폭발, 모임에서 연인 만남", hea: "과식으로 인한 배탈 주의" },
-        { no: 46, name: "46. 지풍승", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/LhpWqLH.png", total: "순조롭게 위로 올라감", bus: "착실한 성취, 승진 및 합격", lov: "차근차근 깊어지는 사랑", hea: "부인과 질환 및 하복부 관리" },
-        { no: 47, name: "47. 택수곤", grade: "4대난괘", isDestiny: false, baseScore: 15, img: "https://imgur.com/oc9L2h1.png", total: "연못에 물이 마른 곤궁함", bus: "자금 경색, 말실수 조심", lov: "고립된 느낌, 소통의 부재", hea: "극심한 피로 및 영양 부족" },
-        { no: 48, name: "48. 수풍정", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/pUYDV3S.png", total: "변치 않는 우물처럼 베킒", bus: "공익 사업, 꾸준한 수익 창출", lov: "한결같은 사람, 신뢰 중심의 연애", hea: "수분 섭취 및 신장 기능 강화" },
-        { no: 49, name: "49. 택화혁", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/zzTmzG7.png", total: "낡은 것을 바꾸는 혁명", bus: "업종 전환, 새로운 시스템 도입", lov: "권태기 극복, 관계의 대변화", hea: "체질 개선 및 성형, 수술운" },
-        { no: 50, name: "50. 화풍정", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/q3QBy1D.png", total: "새로운 체제로 안정을 찾음", bus: "핵심 인재 영입, 조직의 안정", lov: "안정적인 가정도모, 성숙한 사랑", hea: "소화기 강화, 건강한 식단 관리" },
-        { no: 51, name: "51. 중뢰진", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/kw4RAr4.png", total: "천둥소리에 놀라나 실속 있음", bus: "갑작스러운 변화에 침착하면 기회", lov: "깜짝 고백이나 갑작스러운 만남", hea: "신경과민, 심장 두근거림 주의" },
-        { no: 52, name: "52. 중산간", grade: "대흉", isDestiny: false, baseScore: 10, img: "https://imgur.com/OnGRm3x.png", total: "태산처럼 묵직하게 머무를 때", bus: "중단이나 보류가 유리, 관망세", lov: "진전 없는 관계, 인내가 필요", hea: "허리 통증 및 척추 질환 주의" },
-        { no: 53, name: "53. 풍산점", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/tpeb6jn.png", total: "기러기가 날듯 점진적 발전", bus: "착실한 단계별 승진 및 확장", lov: "서두르지 않는 성숙한 연애", hea: "만성 질환의 서서히 회복" },
-        { no: 54, name: "54. 뇌택귀매", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/zXw4eP0.png", total: "순서가 뒤바뀐 위태로운 만남", bus: "편법은 실패의 원인, 원칙 고수", lov: "짝사랑이나 부적절한 관계 주의", hea: "부인과 및 생식기 질환 유의" },
-        { no: 55, name: "55. 뇌화풍", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/17vYqew.png", total: "보름달처럼 풍성한 전성기", bus: "사업의 정점, 화려한 성과", lov: "열정적이고 풍요로운 사랑", hea: "안과 질환 및 뇌혈관 관리" },
-        { no: 56, name: "56. 화산려", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/CRAkx4Q.png", total: "나그네의 외롭고 불안한 길", bus: "해외 업무나 이동수, 불안정", lov: "스쳐 지나가는 인연, 고독감", hea: "유행성 질병 및 여행지 부상" },
-        { no: 57, name: "57. 중풍손", grade: "평괘", isDestiny: true, baseScore: 55, img: "https://imgur.com/zxDhOb1.png", total: "부드러운 바람처럼 스며듦", bus: "유연한 협상과 소문 마케팅", lov: "상대를 배려하는 부드러운 교제", hea: "신경통 및 호흡기 계통 관리" },
-        { no: 58, name: "58. 중택태", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/qycIqsN.png", total: "연못이 만나 기쁨이 넘침", bus: "협상 타결, 서비스업에 아주 길함", lov: "즐거운 데이트, 대화가 잘 통함", hea: "구강 질환 및 기관지 건강 유의" },
-        { no: 59, name: "59. 풍수환", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/WCNOmiS.png", total: "흩어지고 풀리는 해소의 시기", bus: "해외 진출 길함, 문제 해결", lov: "막혔던 감정의 해소와 새로운 시작", hea: "혈액 순환 및 독소 배출 필요" },
-        { no: 60, name: "60. 수택절", grade: "평괘", isDestiny: false, baseScore: 55, img: "https://imgur.com/Shr3LMx.png", total: "대나무 마디처럼 절제할 때", bus: "예산 절감, 과욕 금지, 규칙 준수", lov: "선을 지키는 만남, 과한 구속 주의", hea: "부종 및 신진대사 정체 관리" },
-        { no: 61, name: "61. 풍택중부", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/bfeYi2j.png", total: "진심이 하늘에 닿는 믿음", bus: "신뢰를 바탕으로 한 계약 성사", lov: "깊은 신뢰와 영혼의 동반자", hea: "심리적 안정, 명상이 효과적" },
-        { no: 62, name: "62. 뇌산소과", grade: "소흉", isDestiny: false, baseScore: 35, img: "https://imgur.com/MtpWJe4.png", total: "작은 일에 충실해야 안전함", bus: "디테일한 부분 점검, 큰 투자 금지", lov: "사소한 배려가 큰 감동을 줌", hea: "사소한 증상도 정밀 검사 권장" },
-        { no: 63, name: "63. 수화기제", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/W53k6uy.png", total: "마침내 완성, 유지에 힘쓸 때", bus: "이미 성취함, 안정 지향적 운영", lov: "안정적인 결합, 초심 유지가 관건", hea: "지병의 완치 단계, 재발 주의" },
-        { no: 64, name: "64. 화수미제", grade: "소흉", isDestiny: false, baseScore: 35, img: "https://imgur.com/PNEBdVb.png", total: "새로운 시작을 앞둔 미완성", bus: "재도전 준비, 마지막 고비 주의", lov: "다시 타오르는 감정, 새로운 희망", hea: "활력 회복 중, 끝까지 관리 요망" }
+    { no: 1, name: "1. 중천건", img: "https://imgur.com/oEjEsdS.png", total: "강력한 창조와 발전의 시기", bus: "리더십을 발휘해 추진할 때", lov: "당당하고 열정적인 관계", hea: "에너지가 넘치나 고혈압 주의" },
+    { no: 2, name: "2. 중지곤", img: "https://imgur.com/CRwglhQ.png", total: "포용하고 수용할 때 길함", bus: "조력자를 만나 내실을 다짐", lov: "부드럽고 헌신적인 사랑", hea: "소화기 계통 및 피로 관리" },
+    { no: 3, name: "3. 수뢰둔", img: "https://imgur.com/Wy3tXp7.png", total: "시작의 난관, 인내가 필요", bus: "신규 창업은 신중히 검토", lov: "오해가 생기기 쉬운 시기", hea: "기력 저하, 충분한 휴식 요망" },
+    { no: 4, name: "4. 산수몽", img: "https://imgur.com/CFYsfx1.png", total: "배움과 지도가 필요한 시기", bus: "전문가의 자문을 구할 것", lov: "미숙한 관계, 대화가 필요", hea: "안과 질환 및 신경성 두통" },
+    { no: 5, name: "5. 수천수", img: "https://imgur.com/D4UBH55.png", total: "때를 기다리는 여유가 필수", bus: "성급한 투자는 금물, 대기", lov: "서두르면 망침, 천천히 접근", hea: "신장 및 방광 건강 유의" },
+    { no: 6, name: "6. 천수송", img: "https://imgur.com/y3CKL2O.png", total: "갈등과 다툼을 경계할 것", bus: "계약 및 소송 시 타협 필요", lov: "말다툼 주의, 양보가 보약", hea: "스트레스성 질환, 화병 주의" },
+    { no: 7, name: "7. 지수사", img: "https://imgur.com/a6kkJbS.png", total: "조직력과 규율이 중요한 시기", bus: "경쟁에서 승리하나 책임 가중", lov: "주도권 싸움 경계", hea: "근육통 및 타박상 주의" },
+    { no: 8, name: "8. 수지비", img: "https://imgur.com/H0UswhF.png", total: "화합과 협력이 열쇠인 시기", bus: "협업이나 파트너십에 최적", lov: "깊은 유대감, 결혼운 상승", hea: "전반적인 컨디션 양호" },
+    { no: 9, name: "9. 풍천소축", img: "https://imgur.com/k6krlAV.png", total: "작은 성취, 큰 일은 보류", bus: "자금 흐름이 잠시 정체됨", lov: "사소한 정에 이끌릴 때", hea: "호흡기 및 기관지 관리" },
+    { no: 10, name: "10. 천택리", img: "https://imgur.com/FnOYWNQ.png", total: "예의를 갖춰 위기를 극복", bus: "윗사람의 눈 밖에 나지 말 것", lov: "조심스러운 짝사랑, 예의 중시", hea: "다리 부상 및 보행 주의" },
+    { no: 11, name: "11. 지천태", img: "https://imgur.com/1AHyrXY.png", total: "태평성대, 만사가 형통함", bus: "소통이 잘 되고 거래가 성사됨", lov: "깊은 신뢰와 화합의 시기", hea: "심신이 안정되고 쾌차함" },
+    { no: 12, name: "12. 천지비", img: "https://imgur.com/TF90qV9.png", total: "운세 정체, 소통 부재", bus: "계약 파기나 구설수 주의", lov: "서로 등 돌리는 형국, 인내", hea: "가슴 답답함, 울화병 주의" },
+    { no: 13, name: "13. 천화동인", img: "https://imgur.com/fqPVwBS.png", total: "협동과 동료애가 빛남", bus: "공동 투자나 팀워크에 최적", lov: "뜻이 맞는 인연을 만남", hea: "전염성 질환 주의, 컨디션 보통" },
+    { no: 14, name: "14. 화천대유", img: "https://imgur.com/rvh56NE.png", total: "풍요로움, 큰 결실의 때", bus: "최고의 금전운, 사업 확장", lov: "매력이 넘치고 인기 상승", hea: "시력 보호, 과로로 인한 현기증" },
+    { no: 15, name: "15. 지산겸", img: "https://imgur.com/erUJddR.png", total: "겸손이 복을 부르는 시기", bus: "양보하면 나중에 더 큰 이득", lov: "조용한 사랑, 예의 있는 관계", hea: "허리 및 척추 건강 유의" },
+    { no: 16, name: "16. 뇌지예", img: "https://imgur.com/U6iuMKV.png", total: "즐겁고 희망찬 소식", bus: "새로운 기획이나 축제 분위기", lov: "첫눈에 반하거나 즐거운 데이트", hea: "간 기능 활성화, 과음 주의" },
+    { no: 17, name: "17. 택뢰수", img: "https://imgur.com/KITw1B5.png", total: "순리를 따르면 이로움", bus: "흐름을 타고 남을 따를 때", lov: "상대를 존중하면 사랑받음", hea: "발목 부상 및 다리 통증 주의" },
+    { no: 18, name: "18. 산풍고", img: "https://imgur.com/LC9aPBL.png", total: "낡은 것을 고쳐야 함", bus: "내부 개혁, 수리, 재정비", lov: "숨겨진 문제 해결이 급선무", hea: "배탈, 식중독 등 장 질환 주의" },
+    { no: 19, name: "19. 지택임", img: "https://imgur.com/Ulc0hvE.png", total: "운세 상승, 기회가 옴", bus: "적극적인 홍보와 영업 활성화", lov: "적극적으로 대시할 시기", hea: "피부 질환이나 알레르기 주의" },
+    { no: 20, name: "20. 풍지관", img: "https://imgur.com/Y8bLDPz.png", total: "관망하고 성찰하는 시기", bus: "계획 수정, 시장 조사가 우선", lov: "짝사랑이나 멀리서 지켜봄", hea: "어지럼증, 빈혈 관리 필요" },
+    { no: 21, name: "21. 화뢰서합", img: "https://imgur.com/pASEHQg.png", total: "방해물을 제거할 시기", bus: "법률 문제 해결, 단호한 결정", lov: "오해를 풀기 위한 대화 필수", hea: "치아 및 구강 질환 주의" },
+    { no: 22, name: "22. 산화비", img: "https://imgur.com/Lbpr91Z.png", total: "겉치레보다 내실이 중요", bus: "이미지 마케팅은 좋으나 실속 부족", lov: "화려한 외모보다 마음을 볼 것", hea: "피부 미용 및 성형 부작용 주의" },
+    { no: 23, name: "23. 산지박", img: "https://imgur.com/yiUZbjU.png", total: "불리한 상황, 몸 사릴 때", bus: "자금 악화, 현상 유지에 집중", lov: "이별수나 배신감이 들 수 있음", hea: "면역력 급감, 절대 안정 필요" },
+    { no: 24, name: "24. 지뢰복", img: "https://imgur.com/Iq2n24U.png", total: "회복과 반전의 기회", bus: "실패한 일의 재기, 복귀운", lov: "옛 연인과의 재회 가능성", hea: "지병의 회복, 기력 보충" },
+    { no: 25, name: "25. 천뢰무망", img: "https://imgur.com/j1Nu72f.png", total: "요행을 바라지 마라", bus: "정직한 노력이 보상받음", lov: "가식 없는 태도가 호감을 삼", hea: "갑작스러운 사고나 타박상 주의" },
+    { no: 26, name: "26. 산천대축", img: "https://imgur.com/RpAkcSK.png", total: "큰 힘을 비축하는 시기", bus: "큰 계약이나 자금 확보 가능", lov: "진중하고 무거운 사랑", hea: "체력 보강, 보약이 필요한 때" },
+    { no: 27, name: "27. 산뢰이", img: "https://imgur.com/a6Fwbdw.png", total: "말과 음식의 절제", bus: "언론, 교육, 요식업에 길함", lov: "말실수로 다툴 수 있으니 조심", hea: "비만이나 식이장애 관리" },
+    { no: 28, name: "28. 택풍대과", img: "https://imgur.com/3N9iYOs.png", total: "책임감이 무거운 상태", bus: "자금 압박, 무리한 확장은 금물", lov: "감당하기 힘든 연애 감정", hea: "골절이나 뼈 관련 질환 주의" },
+    { no: 29, name: "29. 중수감", img: "https://imgur.com/H3WHJCW.png", total: "첩첩산중 위기 상황", bus: "사기 및 손재수 주의, 자숙", lov: "삼각관계나 복잡한 고민", hea: "신장, 방광, 산부인과 질환" },
+    { no: 30, name: "30. 중화리", img: "https://imgur.com/4uzTP81.png", total: "열정과 명예의 상승", bus: "예술, 창작, 자격증 취득 길함", lov: "불같은 사랑, 금방 식을 수도", hea: "심장 및 화끈거리는 열병 주의" },
+    { no: 31, name: "31. 택산함", img: "https://imgur.com/UmX3IG5.png", total: "마음이 통하는 감응의 시기", bus: "파트너십, 제휴 계약에 아주 길함", lov: "연애운 최고, 깊은 교감과 설렘", hea: "혈액 순환 및 심리적 안정" },
+    { no: 32, name: "32. 뇌풍항", img: "https://imgur.com/r7Cu9Yc.png", total: "꾸준함과 한결같은 태도", bus: "장기 프로젝트나 기존 사업 유지", lov: "안정적인 결합, 변치 않는 사랑", hea: "만성 피로 관리, 규칙적 생활" },
+	{ no: 33, name: "33. 천산둔", img: "https://imgur.com/lHtNwrH.png", total: "물러나서 몸을 피할 때", bus: "무리한 확장보다 자산 보호", lov: "잠시 거리를 두는 것이 현명함", hea: "스트레스 관리, 명상 필요" },
+    { no: 34, name: "34. 뇌천대장", img: "https://imgur.com/HtxWKrV.png", total: "기세가 당당하고 힘이 넘침", bus: "과감한 추진, 승부사 기질 발휘", lov: "주도적인 연애, 열정적인 관계", hea: "근육질환 및 넘치는 에너지 조절" },
+    { no: 35, name: "35. 화지진", img: "https://imgur.com/qncGUnv.png", total: "밝은 미래로 나아가는 전진", bus: "승진, 당선, 사업의 급속한 성장", lov: "주위에 소문날 만큼 좋은 인연", hea: "활력이 넘치고 안색이 좋아짐" },
+    { no: 36, name: "36. 지화명이", img: "https://imgur.com/4EedukZ.png", total: "어둠 속에서 빛을 감출 때", bus: "실력을 숨기고 때를 기다릴 것", lov: "마음 고생, 짝사랑의 아픔", hea: "불면증, 우울감, 시력 저하 주의" },
+    { no: 37, name: "37. 풍화가인", img: "https://imgur.com/R6LWc0V.png", total: "집안이 화목해야 만사형통", bus: "내부 결속, 가업 승계에 유리", lov: "가족 같은 편안함, 결혼운", hea: "여성 질환 및 가슴 답답함 관리" },
+    { no: 38, name: "38. 화택규", img: "https://imgur.com/eIRW9tj.png", total: "의견 대립과 소외감", bus: "동업자와의 갈등 주의, 독자 노선", lov: "서로 어긋남, 사소한 오해 주의", hea: "안과 질환 및 신경과민" },
+    { no: 39, name: "39. 수산건", img: "https://imgur.com/y7S2NWq.png", total: "눈길에 발이 묶인 형국", bus: "진행 중인 일의 일시 중단", lov: "고독함, 진전 없는 관계", hea: "다리 통증 및 관절염 주의" },
+    { no: 40, name: "40. 뇌수해", img: "https://imgur.com/8ds45Uy.png", total: "꽁꽁 얼었던 문제가 풀림", bus: "자금난 해결, 곤란했던 일의 종결", lov: "갈등 해소, 화해의 타이밍", hea: "질병의 쾌차, 쌓인 독소 배출" },
+    { no: 41, name: "41. 산택손", img: "https://imgur.com/laJLUsA.png", total: "덜어내어 내실을 다질 때", bus: "당장의 지출은 있으나 나중에 이득", lov: "헌신적인 태도가 상대의 마음을 얻음", hea: "다이어트나 해독 요법에 길함" },
+    { no: 42, name: "42. 풍뢰익", img: "https://imgur.com/OMAvSUF.png", total: "도움을 받아 크게 발전함", bus: "투자 유치 성공, 이익의 극대화", lov: "서로에게 도움이 되는 발전적 관계", hea: "기운 보강 및 체력 증진" },
+    { no: 43, name: "43. 택천쾌", img: "https://imgur.com/zfmi71l.png", total: "단호한 결단이 필요한 때", bus: "부정적인 요소 척결, 공정한 처리", lov: "맺고 끊음이 확실해야 함", hea: "비뇨기 계통 및 혈압 관리" },
+    { no: 44, name: "44. 천풍구", img: "https://imgur.com/BZYzVRf.png", total: "뜻밖의 만남, 유혹 주의", bus: "갑작스러운 제안, 꼼수 경계", lov: "매혹적이지만 위험한 인연", hea: "유행성 질환 및 자궁 질환 주의" },
+    { no: 45, name: "45. 택지취", img: "https://imgur.com/c2ctXl0.png", total: "사람과 재물이 모여듬", bus: "네트워크 형성, 모임에서 기회 찾기", lov: "인기 폭발, 모임에서 연인 만남", hea: "과식으로 인한 배탈 주의" },
+    { no: 46, name: "46. 지풍승", img: "https://imgur.com/LhpWqLH.png", total: "순조롭게 위로 올라감", bus: "착실한 성취, 승진 및 합격", lov: "차근차근 깊어지는 사랑", hea: "부인과 질환 및 하복부 관리" },
+    { no: 47, name: "47. 택수곤", img: "https://imgur.com/oc9L2h1.png", total: "연못에 물이 마른 곤궁함", bus: "자금 경색, 말실수 조심", lov: "고립된 느낌, 소통의 부재", hea: "극심한 피로 및 영양 부족" },
+    { no: 48, name: "48. 수풍정", img: "https://imgur.com/pUYDV3S.png", total: "변치 않는 성실함과 나눔의 미학", bus: "공익 사업, 꾸준한 수익 창출", lov: "한결같은 사람, 신뢰 중심의 연애", hea: "수분 섭취 및 신장 기능 강화" },
+    { no: 49, name: "49. 택화혁", img: "https://imgur.com/zzTmzG7.png", total: "낡은 것을 바꾸는 혁명", bus: "업종 전환, 새로운 시스템 도입", lov: "권태기 극복, 관계의 대변화", hea: "체질 개선 및 성형, 수술운" },
+    { no: 50, name: "50. 화풍정", img: "https://imgur.com/q3QBy1D.png", total: "새로운 체제로 안정을 찾음", bus: "핵심 인재 영입, 조직의 안정", lov: "안정적인 가정도모, 성숙한 사랑", hea: "소화기 강화, 건강한 식단 관리" },
+    { no: 51, name: "51. 중뢰진", img: "https://imgur.com/kw4RAr4.png", total: "천둥소리에 놀라나 실속 있음", bus: "갑작스러운 변화에 침착하면 기회", lov: "깜짝 고백이나 갑작스러운 만남", hea: "신경과민, 심장 두근거림 주의" },
+    { no: 52, name: "52. 중산간", img: "https://imgur.com/OnGRm3x.png", total: "태산처럼 묵직하게 머무를 때", bus: "중단이나 보류가 유리, 관망세", lov: "진전 없는 관계, 인내가 필요", hea: "허리 통증 및 척추 질환 주의" },
+    { no: 53, name: "53. 풍산점", img: "https://imgur.com/tpeb6jn.png", total: "기러기가 날듯 점진적 발전", bus: "착실한 단계별 승진 및 확장", lov: "서두르지 않는 성숙한 연애", hea: "만성 질환의 서서히 회복" },
+    { no: 54, name: "54. 뇌택귀매", img: "https://imgur.com/zXw4eP0.png", total: "순서가 뒤바뀐 위태로운 만남", bus: "편법은 실패의 원인, 원칙 고수", lov: "짝사랑이나 부적절한 관계 주의", hea: "부인과 및 생식기 질환 유의" },
+    { no: 55, name: "55. 뇌화풍", img: "https://imgur.com/17vYqew.png", total: "보름달처럼 풍성한 전성기", bus: "사업의 정점, 화려한 성과", lov: "열정적이고 풍요로운 사랑", hea: "안과 질환 및 뇌혈관 관리" },
+    { no: 56, name: "56. 화산려", img: "https://imgur.com/CRAkx4Q.png", total: "나그네의 외롭고 불안한 길", bus: "해외 업무나 이동수, 불안정", lov: "스쳐 지나가는 인연, 고독감", hea: "유행성 질병 및 여행지 부상" },
+    { no: 57, name: "57. 중풍손", img: "https://imgur.com/zxDhOb1.png", total: "부드러운 바람처럼 스며듦", bus: "유연한 협상과 소문 마케팅", lov: "상대를 배려하는 부드러운 교제", hea: "신경통 및 호흡기 계통 관리" },
+    { no: 58, name: "58. 중택태", img: "https://imgur.com/qycIqsN.png", total: "연못이 만나 기쁨이 넘침", bus: "협상 타결, 서비스업에 아주 길함", lov: "즐거운 데이트, 대화가 잘 통함", hea: "구강 질환 및 기관지 건강 유의" },
+    { no: 59, name: "59. 풍수환", img: "https://imgur.com/WCNOmiS.png", total: "막혔던 것이 풀리는 해소", bus: "해외 진출 길함, 문제 해결", lov: "막혔던 감정 해소와 새로운 시작", hea: "혈액 순환 및 독소 배출 필요" },
+    { no: 60, name: "60. 수택절", img: "https://imgur.com/Shr3LMx.png", total: "대나무 마디처럼 절제할 때", bus: "예산 절감, 과욕 금지, 규칙 준수", lov: "선을 지키는 만남, 과한 구속 주의", hea: "부종 및 신진대사 정체 관리" },
+    { no: 61, name: "61. 풍택중부", img: "https://imgur.com/bfeYi2j.png", total: "진심이 하늘에 닿는 믿음", bus: "신뢰를 바탕으로 한 계약 성사", lov: "깊은 신뢰와 영혼의 동반자", hea: "심리적 안정, 명상이 효과적" },
+    { no: 62, name: "62. 뇌산소과", img: "https://imgur.com/MtpWJe4.png", total: "작은 일에 충실해야 안전함", bus: "디테일 부분 점검, 큰 투자 금지", lov: "사소한 배려가 큰 감동을 줌", hea: "사소한 증상도 정밀 검사 권장" },
+    { no: 63, name: "63. 수화기제", img: "https://imgur.com/W53k6uy.png", total: "마침내 완성, 유지에 힘쓸 때", bus: "이미 성취함, 안정 지향적 운영", lov: "안정적인 결합, 초심 유지가 관건", hea: "지병의 완치 단계, 재발 주의" },
+    { no: 64, name: "64. 화수미제", img: "https://imgur.com/PNEBdVb.png", total: "새로운 시작을 앞둔 미완성", bus: "재도전 준비, 마지막 고비 주의", lov: "다시 타오르는 감정, 새로운 희망", hea: "활력 회복 중, 끝까지 관리 요망" }
     ];
 
-    let flippedCount = 0;
+    const luckyColors = ["골드", "화이트", "스카이블루", "에메랄드", "라벤더", "버건디", "차콜", "올리브"];
+    let isFlipped = false;
     let audioCtx;
-
-    function getWeatherInfo(score) {
-        if (score >= 90) return { icon: "☀️", label: "매우 맑음" };
-        if (score >= 70) return { icon: "🌤️", label: "맑음" };
-        if (score >= 40) return { icon: "☁️", label: "구름 조금" };
-        return { icon: "🌧️", label: "흐리고 비" };
-    }
-
-    function calculateScore(card) {
-        if (card.isDestiny) return card.baseScore;
-        return Math.min(100, Math.max(0, card.baseScore + (Math.floor(Math.random() * 7) - 3)));
-    }
-
-    // [행운 데이터 생성 함수]
-    function getLuckyInfo() {
-        const colors = [
-            { name: '골드 (Gold)', code: '#FFD700' },
-            { name: '실버 (Silver)', code: '#C0C0C0' },
-            { name: '네이비 (Navy)', code: '#000080' },
-            { name: '로얄 블루 (Royal Blue)', code: '#4169E1' },
-            { name: '버건디 (Burgundy)', code: '#800020' },
-            { name: '에메랄드 (Emerald)', code: '#50C878' },
-            { name: '화이트 (White)', code: '#FFFFFF' },
-            { name: '블랙 (Black)', code: '#000000' },
-            { name: '라벤더 (Lavender)', code: '#E6E6FA' },
-            { name: '코랄 (Coral)', code: '#FF7F50' }
-        ];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const randomNumber = Math.floor(Math.random() * 9) + 1; // 1~9 사이 랜덤
-        return { color: randomColor, number: randomNumber };
-    }
 
     function initAudio() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -356,8 +185,8 @@
         initAudio();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(440 + (flippedCount * 100), audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880 + (flippedCount * 100), audioCtx.currentTime + 0.3);
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
         gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
         osc.connect(gain); gain.connect(audioCtx.destination);
@@ -367,21 +196,23 @@
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
+
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize); resize();
-    
+
     class Particle {
         constructor(x, y) {
-            this.x = x; this.y = y; this.size = Math.random() * 3 + 1;
-            this.speedX = (Math.random() - 0.5) * 6; this.speedY = (Math.random() - 0.5) * 6;
-            const colors = ['#bf953f', '#fcf6ba', '#b38728', '#fbf5b7', '#fff'];
-            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.x = x; this.y = y;
+            this.size = Math.random() * 4 + 1;
+            this.speedX = (Math.random() - 0.5) * 10;
+            this.speedY = (Math.random() - 0.5) * 10;
+            this.color = `rgba(212, 175, 55, ${Math.random()})`;
             this.life = 1;
         }
         update() { this.x += this.speedX; this.y += this.speedY; this.life -= 0.02; }
         draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
     }
-    
+
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles = particles.filter(p => p.life > 0);
@@ -391,95 +222,41 @@
     animate();
 
     function handleMainAction() {
-        if (flippedCount < 4) {
-            flipCard(flippedCount);
-        } else {
-            drawCard();
-        }
+        if (!isFlipped) handleFlip();
+        else drawCard();
     }
 
-    function handleCardClick(index) {
-        if (flippedCount === index) flipCard(index);
-    }
-
-    function flipCard(index) {
-        const cardInner = document.getElementById(`cardInner${index}`);
-        if (!cardInner.classList.contains('flipped')) {
+    function handleFlip() {
+        if (!isFlipped) {
             playMagicSound();
-            const rect = cardInner.getBoundingClientRect();
-            for (let i = 0; i < 50; i++) particles.push(new Particle(rect.left + rect.width / 2, rect.top + rect.height / 2));
+            const rect = document.querySelector('.card-box').getBoundingClientRect();
+            for (let i = 0; i < 40; i++) particles.push(new Particle(rect.left + rect.width / 2, rect.top + rect.height / 2));
             
-            cardInner.classList.add('flipped');
-            flippedCount++;
-            
-            const btnLabels = ["아침 운세 뽑기", "점심 운세 뽑기", "저녁 운세 뽑기", "카드 다시 뽑기"];
-            document.getElementById('mainBtn').innerText = btnLabels[flippedCount-1];
-
-            if (flippedCount === 4) {
-                setTimeout(() => { 
-                    const resultArea = document.getElementById('result-area');
-                    resultArea.style.display = 'block'; 
-                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 600);
-            }
+            document.getElementById('cardInner').classList.add('flipped');
+            isFlipped = true;
+            document.getElementById('mainBtn').innerText = "카드 다시 셔플";
+            setTimeout(() => { document.getElementById('result-area').style.display = 'block'; }, 500);
         }
     }
 
     function drawCard() {
         initAudio();
-        flippedCount = 0;
+        isFlipped = false;
+        document.getElementById('cardInner').classList.remove('flipped');
         document.getElementById('result-area').style.display = 'none';
-        document.getElementById('mainBtn').innerText = "오늘의 총운 뽑기";
+        document.getElementById('mainBtn').innerText = "오늘의 운세 뽑기";
         
-        const ids = ['Total', 'Morning', 'Afternoon', 'Evening'];
-        const labels = ['오늘의 총운', '아침 운세', '점심 운세', '저녁 운세'];
-        const icons = ['✨', '☀️', '🕛', '🌙'];
-        
-        for (let i = 0; i < 4; i++) {
-            document.getElementById(`cardInner${i}`).classList.remove('flipped');
-            const card = tarotData[Math.floor(Math.random() * tarotData.length)];
-            document.getElementById(`cardImage${i}`).src = card.img;
-            
-            const score = calculateScore(card);
-            const weather = getWeatherInfo(score);
-            
-            let luckyHtml = '';
-            // 총운(i === 0)일 때만 행운 정보 표시
-            if (i === 0) {
-                const lucky = getLuckyInfo();
-                luckyHtml = `
-                    <div class="lucky-section">
-                        <div class="lucky-item">
-                            <span class="lucky-label">🍀 행운의 숫자</span>
-                            <div class="lucky-value">${lucky.number}</div>
-                        </div>
-                        <div class="lucky-item">
-                            <span class="lucky-label">🎨 행운의 컬러</span>
-                            <div class="lucky-value">
-                                <span class="color-dot" style="background-color:${lucky.color.code}"></span>
-                                ${lucky.color.name}
-                            </div>
-                        </div>
-                    </div>`;
-            }
-            
-            document.getElementById(`report${ids[i]}`).innerHTML = `
-                <div class="report-header">
-                    <div class="report-title"><span>${icons[i]}</span>${labels[i]}</div>
-                    <div class="weather-badge">
-                        <span class="grade-tag">[${card.grade}]</span>
-                        <span class="weather-icon">${weather.icon}</span> ${score}점
-                    </div>
-                </div>
-                <div class="report-body">
-                    <h3>${card.name} : ${card.total}</h3>
-                    <div class="report-detail"><strong>💼 사업:</strong> ${card.bus}</div>
-                    <div class="report-detail"><strong>❤️ 연애:</strong> ${card.lov}</div>
-                    <div class="report-detail"><strong>🍎 건강:</strong> ${card.hea}</div>
-                    ${luckyHtml}
-                </div>
-            `;
-        }
+        const card = tarotData[Math.floor(Math.random() * tarotData.length)];
+        document.getElementById('cardImage').src = card.img;
+        document.getElementById('resTitle').innerText = card.name;
+        document.getElementById('resTotal').innerText = "🌟 " + card.total;
+        document.getElementById('resBus').innerText = card.bus;
+        document.getElementById('resLov').innerText = card.lov;
+        document.getElementById('resHea').innerText = card.hea;
+
+        // [행운 랜덤 생성]
+        document.getElementById('luckyColor').innerText = luckyColors[Math.floor(Math.random() * luckyColors.length)];
+        document.getElementById('luckyNum').innerText = Math.floor(Math.random() * 10);
     }
 
     window.onload = drawCard;
