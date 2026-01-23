@@ -196,7 +196,6 @@
 </div>
 
 <script>
-    // [데이터: 1~64번 완벽 검수본]
     const tarotData = [
     { no: 1, name: "1. 중천건", grade: "소길", isDestiny: false, baseScore: 82, img: "https://imgur.com/oEjEsdS.png", total: "강력한 창조와 발전의 시기", bus: "리더십을 발휘해 추진할 때", lov: "당당하고 열정적인 관계", hea: "에너지가 넘치나 고혈압 주의" },
     { no: 2, name: "2. 중지곤", grade: "평괘", isDestiny: false, baseScore: 60, img: "https://imgur.com/CRwglhQ.png", total: "포용하고 수용할 때 길함", bus: "조력자를 만나 내실을 다짐", lov: "부드럽고 헌신적인 사랑", hea: "소화기 계통 및 피로 관리" },
@@ -348,7 +347,12 @@
             document.getElementById('mainBtn').innerText = btnLabels[flippedCount-1];
 
             if (flippedCount === 4) {
-                setTimeout(() => { document.getElementById('result-area').style.display = 'block'; }, 600);
+                setTimeout(() => { 
+                    const resultArea = document.getElementById('result-area');
+                    resultArea.style.display = 'block'; 
+                    // [추가된 기능] 결과 영역으로 부드럽게 스크롤 이동
+                    resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 600);
             }
         }
     }
