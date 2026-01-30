@@ -31,56 +31,40 @@
 
 	   .container { 
             max-width: 500px; margin: 0 auto; 
-            padding: 20px 20px 100px 20px; position: relative; 
+            padding: 0px 20px 100px 20px; position: relative; 
         }	
 		
-       /* 헤더 영역 */
+        /* 헤더 영역 */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 0 20px 0; margin-bottom: 20px;
+            padding: 10px 0 	15px 0; margin-bottom: 10px;
             position: relative;
         }
 
-        /* 백 버튼: 검은색 화살표 */
+        /* 백 버튼 스타일(검은색 화살표) */
         .back-btn {
-            position: absolute; 
-            top: 25px; left: 20px;
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             background: transparent;
             border: none;
             cursor: pointer;
-            z-index: 100;
             transition: transform 0.2s ease;
         }
         .back-btn:hover { transform: scale(1.1); }
-        
-        /* 화살표 아이콘 색상 (검정) */
-        .back-btn svg {
-            width: 28px; height: 28px; 
-            fill: #333333; 
-        }
+        .back-btn svg { width: 28px; height: 28px; fill: var(--text-dark); }
 
-        h1 {
-            font-size: 1.8rem; font-weight: 800; margin: 30px 0 10px 0;
-            color: var(--text-dark);
+		.app-title {
+            font-size: 1.8rem; font-weight: 800; color: var(--text-dark);
+            position: absolute; left: 50%; transform: translateX(-50%);
+            white-space: nowrap;
         }
-
         .subtitle { 
             font-size: 1.0rem; opacity: 0.7; font-weight: 600; 
-            margin-bottom: 10px; color: var(--text-gray);
+			left: 50%; transform: translateX(-50%);
+            margin-top: 70px; color: var(--text-gray);
         }
 
-        /* 3D 고양이 (위치 조정) */
-        .deco-cat {
-            width: 80px; position: absolute; right: 20px; top: 15px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-
+      
         /* 카드 공통 스타일 */
         .card-box { perspective: 1000px; cursor: pointer; position: relative; transition: 0.3s; }
         .card-box:hover { transform: translateY(-5px); }
@@ -214,18 +198,18 @@
 </head>
 <body>
 
-<div class="header">
-    <a href="main.html" class="back-btn" aria-label="메인으로 돌아가기">
-        <svg viewBox="0 0 24 24">
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-        </svg>
-    </a>
-
-    <h1>지니의 주역타로 운세</h1>
-    <div class="subtitle">차분하게 카드를 한 장씩 클릭해 주세요.</div>	
-</div>
-
 <div class="container">
+	
+	<header>
+        <a href="main.html" class="back-btn" aria-label="메인으로 돌아가기">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+            </svg>
+        </a>        
+        <div class="app-title">오늘의 주역 운세</div>
+        <div class="subtitle">차분하게 카드를 한 장씩 클릭해 주세요.</div>	
+	</header>
+	
     <div class="total-card-wrapper">
         <div class="time-label">✨ 오늘의 총운</div>
         <div class="card-box total-card-box" onclick="handleCardClick(0)">
