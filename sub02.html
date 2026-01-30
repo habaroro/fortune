@@ -192,9 +192,9 @@
             display: flex; flex-direction: column; gap: 5px;
         }
         .list-item:hover { border-color: var(--accent-purple); background: #F3F0FF; }
-        .list-no { font-size: 0.8rem; color: #999; font-weight: 600; }
-        .list-name { font-weight: 700; font-size: 1rem; }
-        .list-grade { font-size: 0.8rem; color: var(--accent-purple); font-weight: 600; }
+        .list-no { font-size: 1rem; color: #999; font-weight: 700; }
+        .list-name { font-weight: 800; font-size: 1rem; }
+        .list-grade { font-size: 1rem; color: var(--accent-purple); font-weight: 700; }
         
         .current-mark { border-color: var(--accent-purple); background: #F3F0FF; }
 
@@ -403,7 +403,7 @@ function makeList() {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.id = `listItem-${idx}`;
-        div.innerHTML = `<span class="list-no">No.${card.no}</span><span>${card.name}</span><span style="font-size:0.8rem; color:#d4af37;">[${card.grade}]</span>`;
+        div.innerHTML = `<span class="list-no">No.${card.no}</span><span style="font-size:1rem; color:#000; font-weight: 800">${card.name}</span><span style="font-size:1rem; color:#5D3FD3;">[${card.grade}]</span>`;
         div.onclick = function() { // 클릭 이벤트 직접 바인딩
             currentIndex = idx;
             renderCard(idx);
