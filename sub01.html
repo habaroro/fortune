@@ -29,16 +29,19 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        /* [수정] 상단 헤더: 보라색 배경 제거 -> 심플한 화이트/투명 */
-        .header-area {
-            background: transparent; /* 배경 제거 */
-            padding: 15px 20px 20px 20px;
-            color: var(--text-dark); /* 텍스트 검정색으로 변경 */
+	   .container { 
+            max-width: 500px; margin: 0 auto; 
+            padding: 20px 20px 100px 20px; position: relative; 
+        }	
+		
+       /* 헤더 영역 */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 0 20px 0; margin-bottom: 20px;
             position: relative;
-            /* 그림자나 둥근 모서리 제거하여 심플하게 */
         }
 
-        /* [수정] 백 버튼: 검은색 화살표 */
+        /* 백 버튼: 검은색 화살표 */
         .back-btn {
             position: absolute; 
             top: 25px; left: 20px;
@@ -59,12 +62,12 @@
         }
 
         h1 {
-            font-size: 1.8rem; font-weight: 800; margin: 20px 0 10px 0;
+            font-size: 1.8rem; font-weight: 800; margin: 30px 0 10px 0;
             color: var(--text-dark);
         }
 
         .subtitle { 
-            font-size: 1rem; opacity: 0.7; font-weight: 600; 
+            font-size: 1.0rem; opacity: 0.7; font-weight: 600; 
             margin-bottom: 10px; color: var(--text-gray);
         }
 
@@ -77,10 +80,6 @@
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-        .container { 
-            max-width: 500px; margin: 0 auto; 
-            padding: 0 20px 80px 20px; position: relative; z-index: 10; 
-        }
 
         /* 카드 공통 스타일 */
         .card-box { perspective: 1000px; cursor: pointer; position: relative; transition: 0.3s; }
@@ -129,14 +128,13 @@
         .total-card-box { width: 160px; height: 260px; }
         .time-label { 
             font-size: 1.1rem; color: #5D3FD3; margin-bottom: 10px; font-weight: 800; 
-            background: white; padding: 5px 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .card-wrapper { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 40px; }
         .card-container { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .small-label { font-size: 0.9rem; color: #555; margin-bottom: 8px; font-weight: 700; }
-        .small-card-box { width: 100%; aspect-ratio: 2/3.2; max-width: 90px; } 
-        .small-card-box .card-front::after { font-size: 1.5rem; }
+        .small-label { font-size: 1.1rem; color: #555; margin-bottom: 8px; font-weight: 700; }
+        .small-card-box { width: 100%; aspect-ratio: 2/3.2; max-width: 120px; } 
+        .small-card-box .card-front::after { font-size: 1.3rem; }
 
         /* 버튼 스타일 */
         .draw-btn { 
@@ -166,13 +164,13 @@
         
         .weather-badge { 
             background: #F3F0FF; color: #7F5AFF;
-            padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; font-weight: 700;
+            padding: 5px 12px; border-radius: 15px; font-size: 1.0rem; font-weight: 700;
         }
         
         .report-body h3 { 
-            font-size: 1.2rem; color: #5D3FD3; margin: 0 0 12px 0; font-weight: 800;
+            font-size: 1.1rem; color: #5D3FD3; margin: 0 0 12px 0; font-weight: 800;
         }
-        .report-detail { font-size: 0.95rem; line-height: 1.6; margin-bottom: 6px; color: #555; }
+        .report-detail { font-size: 1.0rem; line-height: 1.6; margin-bottom: 6px; color: #555; }
         .report-detail strong { color: #333; font-weight: 700; margin-right: 5px; }
 
         /* 행운 아이템 섹션 */
@@ -185,7 +183,7 @@
             color: #7F5AFF; font-size: 1.1rem; margin-bottom: 15px; font-weight: 800;
         }
         .lucky-value { 
-            font-size: 1.2rem; font-weight: 800; color: #333;
+            font-size: 1.1rem; font-weight: 800; color: #333;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .color-dot {
@@ -201,14 +199,14 @@
         .sub-btn {
             flex: 1; background: white; color: #555; border: 1px solid #ddd;
             padding: 12px; border-radius: 15px; font-weight: 700; cursor: pointer;
-            font-family: 'NanumSquareRound', sans-serif; transition: 0.2s;
+            font-family: 'NanumSquareRound', sans-serif; transition: 0.2s; font-size: 1.0rem; 
         }
         .sub-btn:hover { background: #f9f9f9; color: #7F5AFF; border-color: #7F5AFF; }
 
         .save-btn {
             background: #333; color: white; border: none; width: 100%;
             padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer;
-            font-family: 'NanumSquareRound', sans-serif;
+            font-family: 'NanumSquareRound', sans-serif; font-size: 1.0rem; 
         }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -216,7 +214,7 @@
 </head>
 <body>
 
-<div class="header-area">
+<div class="header">
     <a href="main.html" class="back-btn" aria-label="메인으로 돌아가기">
         <svg viewBox="0 0 24 24">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
