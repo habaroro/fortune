@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>지니의 주역 타로 도서관</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquareround.css">
     <style>
@@ -30,7 +30,9 @@
         
         .container { 
             max-width: 500px; margin: 0 auto; 
-            padding: 20px 20px 100px 20px; position: relative; 
+            /* 하단 네비게이션 바 높이만큼 여백 확보 (가려짐 방지) */
+            padding: 20px 20px 120px 20px; 
+            position: relative; 
         }
 
         /* 헤더 영역 */
@@ -40,7 +42,7 @@
             position: relative;
         }
 
-        /* [NEW] 백 버튼 스타일 (검은색 화살표) */
+        /* 백 버튼 스타일 (검은색 화살표) */
         .back-btn {
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
@@ -64,7 +66,7 @@
             padding: 8px 14px; border-radius: 20px; cursor: pointer; 
             font-size: 0.9rem; font-weight: 700; font-family: 'NanumSquareRound', sans-serif; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s;
-            z-index: 10; /* 타이틀보다 위에 */
+            z-index: 10;
         }
         .list-btn:hover { background: #f0f0f0; }
 
@@ -147,21 +149,35 @@
             background: #F3F0FF; border: 1px solid #E0D4FC;
             border-radius: 12px; padding: 18px; margin-bottom: 20px;
             font-size: 1rem; line-height: 1.6; color: var(--accent-purple); white-space: pre-line;
-            font-weight: 700; text-align: justify;
+            font-weight: 700; text-align:  justify;
         }
 
-        /* 하단 네비게이션 바 */
+        /* [수정] 하단 네비게이션 바 (모바일 안전 영역 대응) */
         .nav-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(255, 255, 255, 0.95); border-top: 1px solid #eee;
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            /* 기본 높이 + 안전 영역 높이 */
+            height: auto; 
+            min-height: 70px;
+            background: rgba(255, 255, 255, 0.95); 
+            border-top: 1px solid #eee;
             backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center; padding: 0 25px; 
-            box-sizing: border-box; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 25px;
+            /* 아이폰 하단 바 영역 대응 */
+            padding-bottom: env(safe-area-inset-bottom);
+            box-sizing: border-box; 
+            z-index: 999; 
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
         .nav-btn {
             background: none; border: none; color: var(--text-dark); font-size: 1rem; font-weight: 800;
             cursor: pointer; font-family: 'NanumSquareRound', sans-serif; display: flex; align-items: center; gap: 5px;
-            transition: 0.2s; padding: 10px;
+            transition: 0.2s; padding: 15px 10px; /* 터치 영역 확보 */
         }
         .nav-btn:active { transform: scale(0.95); color: var(--accent-purple); }
         .nav-center { font-size: 1rem; color: #888; font-weight: 700; }
@@ -169,7 +185,7 @@
         /* 모달 (전체 목록) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 200; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(5px);
         }
         .modal-content-wrapper {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 85%;
@@ -206,14 +222,14 @@
 
 <div class="container">
     <header>
-        <a href="main.html" class="back-btn" aria-label="메인으로 돌아가기">
+        <a href="../index.html" class="back-btn" aria-label="메인으로 돌아가기">
             <svg viewBox="0 0 24 24">
                 <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
             </svg>
         </a>
         
         <div class="app-title">주역 타로 도서관</div>
-        <button class="list-btn" onclick="openModal()">📚 목록</button>
+        <button class="list-btn" onclick="openModal()">☰ 목록</button>
     </header>
 
     <div class="card-display-area" onclick="flipCard()">
@@ -403,7 +419,7 @@ function makeList() {
         const div = document.createElement('div');
         div.className = 'list-item';
         div.id = `listItem-${idx}`;
-        div.innerHTML = `<span class="list-no">No.${card.no}</span><span>${card.name}</span><span style="font-size:0.8rem; color:#d4af37;">[${card.grade}]</span>`;
+        div.innerHTML = `<span class="list-no">No.${card.no}</span><span style="font-size:1rem; color:#000; font-weight: 800">${card.name}</span><span style="font-size:1rem; color:#5D3FD3;">[${card.grade}]</span>`;
         div.onclick = function() { // 클릭 이벤트 직접 바인딩
             currentIndex = idx;
             renderCard(idx);
@@ -440,7 +456,6 @@ window.onload = function() {
         alert("데이터가 없습니다. 코드를 확인해주세요.");
     }
 }
-
 </script>
 </body>
 </html>
