@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>지니의 주역 타로 도서관</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquareround.css">
     <style>
@@ -30,9 +31,7 @@
         
         .container { 
             max-width: 500px; margin: 0 auto; 
-            /* 하단 네비게이션 바 높이만큼 여백 확보 (가려짐 방지) */
-            padding: 20px 20px 120px 20px; 
-            position: relative; 
+            padding: 20px 20px 100px 20px; position: relative; 
         }
 
         /* 헤더 영역 */
@@ -42,7 +41,7 @@
             position: relative;
         }
 
-        /* 백 버튼 스타일 (검은색 화살표) */
+        /* [NEW] 백 버튼 스타일 (검은색 화살표) */
         .back-btn {
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
@@ -66,7 +65,7 @@
             padding: 8px 14px; border-radius: 20px; cursor: pointer; 
             font-size: 0.9rem; font-weight: 700; font-family: 'NanumSquareRound', sans-serif; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s;
-            z-index: 10;
+            z-index: 10; /* 타이틀보다 위에 */
         }
         .list-btn:hover { background: #f0f0f0; }
 
@@ -149,35 +148,21 @@
             background: #F3F0FF; border: 1px solid #E0D4FC;
             border-radius: 12px; padding: 18px; margin-bottom: 20px;
             font-size: 1rem; line-height: 1.6; color: var(--accent-purple); white-space: pre-line;
-            font-weight: 700; text-align:  justify;
+            font-weight: 700; text-align: justify;
         }
 
-        /* [수정] 하단 네비게이션 바 (모바일 안전 영역 대응) */
+        /* 하단 네비게이션 바 */
         .nav-bar {
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            /* 기본 높이 + 안전 영역 높이 */
-            height: auto; 
-            min-height: 70px;
-            background: rgba(255, 255, 255, 0.95); 
-            border-top: 1px solid #eee;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(255, 255, 255, 0.95); border-top: 1px solid #eee;
             backdrop-filter: blur(10px);
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 0 25px;
-            /* 아이폰 하단 바 영역 대응 */
-            padding-bottom: env(safe-area-inset-bottom);
-            box-sizing: border-box; 
-            z-index: 999; 
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 25px; 
+            box-sizing: border-box; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
         .nav-btn {
             background: none; border: none; color: var(--text-dark); font-size: 1rem; font-weight: 800;
             cursor: pointer; font-family: 'NanumSquareRound', sans-serif; display: flex; align-items: center; gap: 5px;
-            transition: 0.2s; padding: 15px 10px; /* 터치 영역 확보 */
+            transition: 0.2s; padding: 10px;
         }
         .nav-btn:active { transform: scale(0.95); color: var(--accent-purple); }
         .nav-center { font-size: 1rem; color: #888; font-weight: 700; }
@@ -185,7 +170,7 @@
         /* 모달 (전체 목록) */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.6); z-index: 200; backdrop-filter: blur(5px);
         }
         .modal-content-wrapper {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 85%;
@@ -208,9 +193,9 @@
             display: flex; flex-direction: column; gap: 5px;
         }
         .list-item:hover { border-color: var(--accent-purple); background: #F3F0FF; }
-        .list-no { font-size: 0.8rem; color: #999; font-weight: 600; }
-        .list-name { font-weight: 700; font-size: 1rem; }
-        .list-grade { font-size: 0.8rem; color: var(--accent-purple); font-weight: 600; }
+        .list-no { font-size: 1rem; color: #999; font-weight: 700; }
+        .list-name { font-weight: 800; font-size: 1rem; }
+        .list-grade { font-size: 1rem; color: var(--accent-purple); font-weight: 700; }
         
         .current-mark { border-color: var(--accent-purple); background: #F3F0FF; }
 
@@ -222,13 +207,13 @@
 
 <div class="container">
     <header>
-        <a href="../index.html" class="back-btn" aria-label="메인으로 돌아가기">
+        <a href="main.html" class="back-btn" aria-label="메인으로 돌아가기">
             <svg viewBox="0 0 24 24">
                 <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
             </svg>
         </a>
         
-        <div class="app-title">주역 타로 도서관</div>
+        <div class="app-title">주역타로 해석</div>
         <button class="list-btn" onclick="openModal()">☰ 목록</button>
     </header>
 
@@ -321,10 +306,10 @@ const studyData = [
 {no:25,name:"천뢰무망",grade:"평괘(운명)",img:"https://imgur.com/Wo5xKmB.png",desc:"욕심을 내려 놓고 생각을 텅 비운 상황을\n표현한 그림\n무상무념.결백.천진함.깨끗함.\n순수한.신성함.예측불허.단순함.\n예상치 못한",loveMain:"운명의 고리가 강한 관계",biz:"판단이 서지 않는 상황.\n불확실성\n금전운♡\n예상치 못한 당첨.횡재수",lov:{some:"순수하게 끌리는 마음",couple:"편안하고 안정적인 마음",break:"헤어지고 싶어도 헤어질 수 없는 마음"},hea:"갑작스러운 사고나 타박상 주의"},
 {no:26,name:"산천대축",grade:"대길",img:"https://imgur.com/mu7px58.png",desc:"강인하여 길들여진 힘.큰 성과.\n자기성찰.만사형통.잠재력 발현.\n유망하다.대길.부유.강하다.큰 돈.큰 재물\n몇배의 결실.만족스런 결과",loveMain:"환경적인.재물에 대한 관심.\n눈이 높음.\n감정보다는 이성적 계산",biz:"성장이 무궁무진.비전 있다.좋은 시점.\n큰 수확.성공적인 진행.만족스런결과",lov:{some:"조건 따지며 이성적으로 생각하는 마음",couple:"미래 따지고 멀리 바라보는 마음",break:"감정 보다는 이성적으로 생각하며 재회를 바라보는 마음"},hea:"체력 보강, 보약이 필요한 때"},
 {no:27,name:"산뢰이",grade:"평괘",img:"https://imgur.com/plSsqmw.png",desc:"키우고 기른다.양육.봉양하다.\n턱.입관련.수련하다.갈고 닦는다.\n자기계발.차근차근 성장.구설.루머",loveMain:"혼자서도 만족.\n눈 높음.자존심 싸움.\n팽팽한 밀고 당기기",biz:"성장단계.\n실력을 더 갈고 닦기 위한 공부와 배움이 필요",lov:{some:"밀당하는 마음",couple:"자존심 싸움.팽팽한 마음",break:"상대방이 먼저 다가와 주기를 바라는 마음"},hea:"비만이나 식이장애 관리"},
-{no:28,name:"택풍대과",grade:"대흉",img:"https://imgur.com/ZyxvKMk.png",desc:"크게 지나침.과도한 부담.과잉.정신적 고통.\n피로.소진.폭식.과식.과욕.부담.우려.짐.\n비상상태.강박관녕.과소비.과로.스트레스.\n번아웃증후군",loveMain:"부담.자신감 없음.피하고 싶음.\n모태솔로.대인기피증",biz:"버거워 함.위태로움.곤란함.\n자제해야 함.\n스트레스 많음",lov:{some:"부담스럽고 자신 없어 하는 마음",couple:"위기같은 부담감을 느끼는 마음",break:"재회하기 두렵고 아직은 피하고 싶은  마음"},hea:"골절이나 뼈 관련 질환 주의"},
+{no:28,name:"택풍대과",grade:"대흉",img:"https://imgur.com/ZyxvKMk.png",desc:"크게 지나침.과도한 부담.과잉.정신적 고통.\n피로.소진.폭식.과식.과욕.부담.우려.짐.\n비상상태.강박관녕.과소비.과로.스트레스.\n번아웃증후군",loveMain:"부담.자신감 없음.피하고 싶음.\n모태솔로.대인기피증",biz:"버거워 함.위태로움.곤란함.\n자제해야 함.\n스트레스 많음",lov:{some:"부담스럽고 자신 없어 하는 마음",couple:"위기같은 부담감을 느끼는 마음",break:"재회하기 두렵고 아직은 피하고 싶은  마음"},hea:"골절이나 뼈 관련 질환 주의"},
 {no:29,name:"중수감",grade:"4대난괘",img:"https://imgur.com/7S7Zlqw.png",desc:"함정.구덩이.깊은 계곡.위험.불안정.예측불가능.\n위험한 조건.어두운 감정.두려움에 직면.\n휩싸임.깊은근심.위기.실패.불합격.\n사기.이별.배신.다툼.고통의 시간\n인문학.철학.심리학.종교.상담등\n정신세계 공부에는 좋다",loveMain:"풀리지 않고 반복되는 갈등",biz:"계속 꼬이고 꼬임",lov:{some:"이러지도 저러지도 못하는 마음.\n현실적인 여력이 좋지 않다",couple:"풀리지 않고 반복되는 갈등으로 \n힘든 마음",break:"이별한거 생각하면 상처도 깊고 우울한 마음"},hea:"신장, 방광, 산부인과 질환"},
 {no:30,name:"중화리",grade:"평괘",img:"https://imgur.com/Xt8jRWu.png",desc:"인기많다.열정.애착.밝음.\n정열.태양.불빛.조명.\n예술적 영감.선행.미덕.깨우침.\n헌신.전념.부흥.재건.\n모든것을 소비하는.정신적인 개화.\n활력.축제.봉사",loveMain:"뜨거운 사랑.불타는 사랑.\n급격히 친밀.\n인기짱.외적매력",biz:"일이 활발하고 순조로움.\n활기.적극적.분주.\n단기이익",lov:{some:"급격히 가까워지고 친밀해지고 싶은 마음",couple:"열정적인 마음",break:"빨리 화해하고 재회 하고 싶은 마음"},hea:"심장 및 화끈거리는 열병 주의"},
-{no:31,name:"택산함",grade:"소길",img:"https://imgur.com/nvcvWvG.png",desc:"조화.영향력.흥분.연결.접속.진정한 사랑.상호간의 끌림.\n감성충만.순수한 애정.진실된 교감.\n소소하게 좋은 일.긍정적.순수",loveMain:"두근거림.\n풋풋한 관계",biz:"만족스럽고 즐거움.\n자아실현을 통한 성취와 행복\n동업시 명확한 문서 만들어야 한다.",lov:{some:"설레이는 마음.\n첫 눈에 반한 마음",couple:"항상 보고 싶은 마음",break:"빨리 재회를 꿈꾸며 보고 싶은  마음"},hea:"혈액 순환 및 심리적 안정"},
+{no:31,name:"택산함",grade:"소길",img:"https://imgur.com/nvcvWvG.png",desc:"조화.영향력.흥분.연결.접속.진정한 사랑.상호간의 끌림.\n감성충만.순수한 애정.진실된 교감.\n소소하게 좋은 일.긍정적.순수",loveMain:"두근거림.\n풋풋한 관계",biz:"만족스럽고 즐거움.\n자아실현을 통한 성취와 행복\n동업시 명확한 문서 만들어야 한다.",lov:{some:"설레이는 마음.\n첫 눈에 반한 마음",couple:"항상 보고 싶은 마음",break:"빨리 재회를 꿈꾸며 보고 싶은  마음"},hea:"혈액 순환 및 심리적 안정"},
 {no:32,name:"뇌풍항",grade:"평괘",img:"https://imgur.com/LmlZ30H.png",desc:"한결같은 모습으로 함께 하는 모습.\n안정적이나 한편으로는 권태롭기도 한\n상황을 표현한 그림\n지속성.한결같음.불변성.성숙함.영구적인.안정.\n착실.인내.끈기,지구력.일편딘심.일상반복",loveMain:"오래된 연인.부부.\n편안한 친구같은사랑.\n권태로움.무덤덤",biz:"반복의 연속.규칙적인 하루 일과.\n지루하고 따분함.\n현상태유지",lov:{some:"거리를 두고 무덤덤한 마음",couple:"편안한 친구같은 마음.권태로움",break:"적극성은 없는 마음.\n언젠가 보겠지~담담하고 무기력한 마음"},hea:"만성 피로 관리, 규칙적 생활"},
 {no:33,name:"천산둔",grade:"대흉",img:"https://imgur.com/WWmK9Pw.png",desc:"후퇴.물러나다.은둔하다.멀리가다.\n은퇴.풀어주다.철수.재평가.퇴직.\n수행.연구.학문등 내면을 수행하는 공부엔 유리하다",loveMain:"애정표현 감소.\n답답한 연애",biz:"무난하고 평범.\n즐겁지는 않음.\n영업직이나 새로운 일은 좋지 않다",lov:{some:"답답해 하는 마음",couple:"소극적이고 수동적인 마음",break:"재회에 대해 소극적이고 수동적인 마음.\n재회할 마음 그닥 없는 마음"},hea:"스트레스 관리, 명상 필요"},
 {no:34,name:"뇌천대장",grade:"평괘",img:"https://imgur.com/rfiy5Aw.png",desc:"덩치 큰 대장부가 천칭을 들고\n냉철한 이성과 자신감으로 계획을 세우는\n상황을 표현한 그림\n강력함.지휘력.역량.효능.최고의 컨디션. \n의지의 힘.권위.존엄.영향력.자신감.\n힘차다.성대하다.씩씩하다.\n기세등등.굳센 기상.능력 많다.열정",loveMain:"높은 기준.\n연애가 쉽지 않음\n쏠로연애운♡\n생겨도 성에 안찬다",biz:"에너지 강하고 목표도 높다.\n리더면 좋다",lov:{some:"깐깐하게 생각하며 \n저울질 하는 마음",couple:"높은 기준으로 \n저울질 하는 마음",break:"이별한 이유 생각하며 \n저을질 하는 마음"},hea:"근육질환 및 넘치는 에너지 조절"},
@@ -346,8 +331,8 @@ const studyData = [
 {no:50,name:"화풍정",grade:"평괘",img:"https://imgur.com/jwcaOFg.png",desc:"발이 셋인 솥(삼각관계, 두집 살림)\n안정감.숙달됨.포함하다.담고있다.\n명예.재물.크게 뻗어 발전하다.\n운수대통.주도적.만사형통.풍족.\n베풀어야 한다",loveMain:"한솥밥 먹을 사이.결혼할 인연.\n신뢰도 높음.\n임신 가능성",biz:"지위가 높음.안정적이고 만족스러움.\n많은 사람이 우러러 봄.\n새로운 인물을 만나 새로운 일 시작.\n목표했던 일 이루어짐",lov:{some:"호감 크고 긍정적이며 진정성 있게 만나고 싶은 마음",couple:"믿음이 강하고 돈독하고 끈끈한 마음.\n결혼까지 생각하는 마음",break:"함께 할 인연이라 생각하며 재회하고 싶은 마음"},hea:"소화기 강화, 건강한 식단 관리"},
 {no:51,name:"중뢰진",grade:"평괘",img:"https://imgur.com/LHSr9FG.png",desc:"누군가 큰 북을 요란하게 치고 있고\n그 소리에 화들짝 놀라는 상황을\n표현한 그림\n벼락.우레.진동하는 움직임.\n몹시 두려워함.사나운 모양.깨우침.\n충격.대변동.위기.각성하다.\n극적인 힘의 변화.예측불가능.긴장감.\n격변.갑작스러운사건.소식",loveMain:"과거의 인연으로부터 갑작스러운 연락.소식이 들려옴.\n긴장감.짜릿한 관계\n쏠로연애운♡예전에 알던 사람에게 연락온다",biz:"불편.심장 철렁한 일.스트레스.",lov:{some:"설레이는 마음.\n긴장하는 마음",couple:"돌발상황으로 긴장하는 마음.\n깜짝 놀란 마음",break:"상대방 소식을 기다리며 조바심 나는 마음"},hea:"신경과민, 심장 두근거림 주의"},
 {no:52,name:"중산간",grade:"대흉",img:"https://imgur.com/ydLZjhU.png",desc:"묵직한 무게감으로 늘 자리를 지키고 있는\n산.비가 오나 바람이 부나 멈춰있는\n상황을 표현한 그림\n그치다.머무르다.계속 유지하다.\n초연함.심사숙고.침착함.평정심.지속.묵묵하다.\n티끌모아 태산.대기만성",loveMain:"무덤덤.오랜 친구처럼 편안함.\n안정적인 관계.의리.우정.동료애",biz:"자신의 맡은 일을 묵묵히 잘해냄.\n뒤늦게 인정 받음.\n일이 속히 이루어지지 않음",lov:{some:"무덤덤한 마음.\n친구같은 마음",couple:"편안하고 안정되고 한결같은 마음",break:"묵묵히 기다리는 마음"},hea:"허리 통증 및 척추 질환 주의"},
-{no:53,name:"풍산점",grade:"소길",img:"https://imgur.com/rug3IJK.png",desc:"한 사람이 악기를 연주하고 있고\n따뜻한 바람을 타고 아름다운 선율이\n널리 퍼지는 상황을 표현한 그림\n점점.천천히.점차로 나아가는것.전개.발달.\n점진적인 진보.연속성.적응성.\n천천히 하지만 확실하게.\n단계를 거쳐서.차근차근",loveMain:"발전하고 가까워짐.점차 좋아짐.\n결혼등 발전되는 관계",biz:"지금하는 일이  대체로 만족.\n점점 더 나아짐.목표달성",lov:{some:"더욱 발전하고 싶고 점점 가까워지고 싶은 마음",couple:"더 사랑하고 좋아지는 마음.\n결혼도 생각하는 마음",break:"인연이라고 생각하고 시간이 걸려도 다시 만나고 싶은 마음"},hea:"만성 질환의 서서히 회복"},
-{no:54,name:"뇌택귀매",grade:"평괘",img:"https://imgur.com/CmI8p3p.png",desc:"누군가로 인해 마음이 흔들리고\n답답한 모습\n이러지도 저러지도 못하는 난감한 상황\n정상적이지 못한 결혼.불합리한 결혼(연애).\n종속.귀속.조작.속임.유혹에 굴복하다.낮은자부심.\n현실에 타협한 모습.\n불만족.함정.구설.시비.치욕",loveMain:"애증의 관계.복잡하고 얽혀있는 관계.\n헤어지고 싶어도 만날 수 밖에 없는 사람\n쏠로연애운♡새로운 이성 생길 확률 있으나 조건만남",biz:"사람으로 인해 불편.억울한 상태.\n구설수.눈치 보임.\n순조롭지 못하고 노력에 비해 소득 적다.\n일이 뜻대로 되지 않음",lov:{some:"맘에 드는 조건이 있어서 끌리는 마음",couple:"만나면 힘들고 스트레스 받고 떨어지면 생각나고 후회하는 마음(애증)",break:"헤어지고 싶어도 만날 수 밖에 없는 마음.(이득을 보는  조건이 있다)"},hea:"부인과 및 생식기 질환 유의"},
+{no:53,name:"풍산점",grade:"소길",img:"https://imgur.com/rug3IJK.png",desc:"한 사람이 악기를 연주하고 있고\n따뜻한 바람을 타고 아름다운 선율이\n널리 퍼지는 상황을 표현한 그림\n점점.천천히.점차로 나아가는것.전개.발달.\n점진적인 진보.연속성.적응성.\n천천히 하지만 확실하게.\n단계를 거쳐서.차근차근",loveMain:"발전하고 가까워짐.점차 좋아짐.\n결혼등 발전되는 관계",biz:"지금하는 일이  대체로 만족.\n점점 더 나아짐.목표달성",lov:{some:"더욱 발전하고 싶고 점점 가까워지고 싶은 마음",couple:"더 사랑하고 좋아지는 마음.\n결혼도 생각하는 마음",break:"인연이라고 생각하고 시간이 걸려도 다시 만나고 싶은 마음"},hea:"만성 질환의 서서히 회복"},
+{no:54,name:"뇌택귀매",grade:"평괘",img:"https://imgur.com/CmI8p3p.png",desc:"누군가로 인해 마음이 흔들리고\n답답한 모습\n이러지도 저러지도 못하는 난감한 상황\n정상적이지 못한 결혼.불합리한 결혼(연애).\n종속.귀속.조작.속임.유혹에 굴복하다.낮은자부심.\n현실에 타협한 모습.\n불만족.함정.구설.시비.치욕",loveMain:"애증의 관계.복잡하고 얽혀있는 관계.\n헤어지고 싶어도 만날 수 밖에 없는 사람\n쏠로연애운♡새로운 이성 생길 확률 있으나 조건만남",biz:"사람으로 인해 불편.억울한 상태.\n구설수.눈치 보임.\n순조롭지 못하고 노력에 비해 소득 적다.\n일이 뜻대로 되지 않음",lov:{some:"맘에 드는 조건이 있어서 끌리는 마음",couple:"만나면 힘들고 스트레스 받고 떨어지면 생각나고 후회하는 마음(애증)",break:"헤어지고 싶어도 만날 수 밖에 없는 마음.(이득을 보는  조건이 있다)"},hea:"부인과 및 생식기 질환 유의"},
 {no:55,name:"뇌화풍",grade:"소길",img:"https://imgur.com/y9YhZTS.png",desc:"풍년.풍성하다.풍부함.풍요로운.가득함.\n아낌없는 마음.관대함.다량.내적인풍족함.\n수확보상.물질적충만.노력의결과\n절정.최고점.행복한 시기",loveMain:"행복하고 충만함.",biz:"만족스러운 결과.\n추진.확장도 좋음.\n인정받고 실력도 좋음",lov:{some:"에너지 넘치고 자신감 있는 마음",couple:"사랑하고 행복하고 충만한 마음",break:"아직도 마음이 가득해서 재회 하고픈 마음"},hea:"안과 질환 및 뇌혈관 관리"},
 {no:56,name:"화산려",grade:"평괘",img:"https://imgur.com/Gs4OCjM.png",desc:"정처 없이 떠도는 나그네! \n언제라도 떠날 수 있는 간소한 짐을 들고 여행하는 상황을 표현한 그림\n여행.나그네.방랑자.여행자.모험.움직임.이동.\n혼자임.변동.이동.모험이 잦은 시기.\n쓸쓸.고독.불안",loveMain:"상대와 화합이 안됨.\n제멋대로.\n잠수이별.\n만나도 허전하고 외로움",biz:"마음이 한 곳에 있지 못하고 분산.역마살.\n외판업.여행업.프리랜서.\n글쓰는 작가에는 길하다",lov:{some:"제멋대로인 마음.\n상대방이 제멋대로라고 생각하는 마음.\n거리감이 있다고 생각하는 마음",couple:"만나도 허전하고 외로운 마음.\n마음이 멀어지고 이별까지 생각하는 마음",break:"자유로운 영혼이고 싶은 마음.\n혼자 있고 싶은 마음"},hea:"유행성 질병 및 여행지 부상"},
 {no:57,name:"중풍손",grade:"평괘(운명)",img:"https://imgur.com/KNlM7ya.png",desc:"바람이 운명으로 인도해준다.\n부드러운 바람이 부는대로 따라가면\n탈이 없는 상황을 표현한 그림\n(이끌어주는대로 순응, 자기자신을 낮추는 구간, 억지부리면 안됌)\n상냥함.부드러움.온화함.믿음.\n접근.이해.우유부단,\n하늘의 도움.순리.순응.기도하는 마음",loveMain:"운명적 만남.\n뗄레야 뗄수없는 인연.\n마음이 끌림",biz:"순리적.수동적.순응해야 손해가 없다.\n운의 바람이 불었을 경우엔 노력이상의 수익 얻음",lov:{some:"이유없이 끌리고 흔들리는 마음",couple:"뗄레야 뗄수없는 인연이라고 생각하는 마음",break:"이러지도 저러지도 못하는 마음.\n헤어지지 못하고 다시 만날거라 생각하는 마음"},hea:"신경통 및 호흡기 계통 관리"},
