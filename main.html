@@ -80,7 +80,7 @@
         /* 브랜드 캐릭터 */
         .brand-character {
             position: absolute;
-            right: 50px; 
+            right: 10px; 
             bottom: 65px; 
             width: 200px; 
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3)); 
@@ -188,10 +188,32 @@
             color: white;
             box-shadow: 0 8px 20px rgba(157, 112, 255, 0.25);
             text-decoration: none;
-            margin-bottom: 40px; /* 푸터와의 간격 */
+            margin-bottom: 20px; /* 푸터와의 간격 */
             transition: transform 0.2s;
         }
         .bottom-banner:active { transform: scale(0.98); }
+
+        .banner-text { font-weight: 700; font-size: 1.05rem; }
+        .banner-btn {
+            background: rgba(255,255,255,0.25); 
+            padding: 8px 16px; border-radius: 20px; 
+            font-size: 0.85rem; font-weight: 600;
+        }
+		
+		
+		/* [추가] 3. 하단 배너 스타일 */
+        .bottom-banner2 {
+            background: linear-gradient(to right, #6783ff, #b768ff); /* 살짝 다른 보라톤 */
+            border-radius: 20px;
+            padding: 20px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            color: white;
+            box-shadow: 0 8px 20px rgba(157, 112, 255, 0.25);
+            text-decoration: none;
+            margin-bottom: 40px; /* 푸터와의 간격 */
+            transition: transform 0.2s;
+        }
+        .bottom-banner2:active { transform: scale(0.98); }
 
         .banner-text { font-weight: 700; font-size: 1.05rem; }
         .banner-btn {
@@ -251,6 +273,11 @@
 
         <a href="uni.html" class="bottom-banner">
             <div class="banner-text"> 유니버셜 웨이트 타로 카드</div>
+            <div class="banner-btn">전체 보기 ❯</div>
+        </a>
+		
+		 <a href="hor.html" class="bottom-banner2">
+            <div class="banner-text"> 호로스코프벨린 카드</div>
             <div class="banner-btn">전체 보기 ❯</div>
         </a>
 
