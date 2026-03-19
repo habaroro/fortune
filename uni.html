@@ -68,7 +68,7 @@
 
         /* 카드 디스플레이 영역 */
         .card-display-area {
-            perspective: 1000px; width: 220px; height: 400px; 
+            perspective: 1000px; width: 240px; height: 400px; 
             margin: 0 auto 30px auto; cursor: pointer;
         }
         .card-inner {
@@ -96,7 +96,7 @@
             filter: drop-shadow(0 5px 10px rgba(127, 90, 255, 0.2));
         }
         .card-front .card-name { 
-            font-size: 1.5rem; color: var(--text-dark); font-weight: 800; margin-bottom: 5px; 
+            font-size: 1.4rem; color: var(--text-dark); font-weight: 800; margin-bottom: 5px; 
         }
         .card-front .grade-badge { 
             font-size: 0.9rem; color: white; background: var(--accent-purple);
@@ -273,7 +273,7 @@
 <script>
 const studyData = [
     {
-        no: "0", name: "바보 (The Fool)", grade: "메이저 아르카나", 
+        no: "0", name: "바보\n(The Fool)", grade: "메이저 아르카나", 
         img: "./images/00.jpg", 
         desc: "자유로움, 얽매이지 않음, 새로운 시작, 무한한 잠재력, 순수함.\n절벽 끝에 서 있지만 두려움 없이 앞을 향해 나아가는 모습입니다.\n계획성보다는 직관과 충동에 따르는 경향이 있습니다.", 
         loveMain: "자유분방한 연애.\n얽매이는 것을 싫어함.\n쏠로연애운♡새로운 인연이 우연히 시작될 수 있음", 
@@ -282,7 +282,7 @@ const studyData = [
         hea: "다리 부상이나 낙상 주의. 정신적으로는 스트레스 없이 자유로움."
     },
     {
-        no: "I", name: "마법사 (The Magician)", grade: "메이저 아르카나", 
+        no: "I", name: "마법사\n(The Magician)", grade: "메이저 아르카나", 
         img: "./images/01.jpg", 
         desc: "창조, 자신감, 다재다능, 재치, 의사소통 능력.\n지수화풍(펜타클, 컵, 소드, 완드) 네 가지 원소를 모두 다룰 줄 아는 능력자입니다.\n무엇이든 해낼 수 있는 준비가 되어 있으며, 매력적입니다.", 
         loveMain: "매력적이고 주도적인 연애.\n말솜씨가 좋고 이벤트에 능함.\n쏠로연애운♡마음만 먹으면 언제든 시작 가능", 
@@ -291,7 +291,7 @@ const studyData = [
         hea: "신경계 질환이나 호흡기 주의. 에너지가 넘치는 상태."
     },
     {
-        no: "II", name: "여사제 (The High Priestess)", grade: "메이저 아르카나", 
+        no: "II", name: "여사제\n(The High Priestess)", grade: "메이저 아르카나", 
         img: "./images/02.jpg", 
         desc: "직관, 비밀, 수용성, 차분함, 지혜.\n감정을 겉으로 드러내지 않고 속으로 깊이 생각하는 모습입니다.\n이성적이고 차가워 보일 수 있으나 내면의 통찰력이 뛰어납니다.", 
         loveMain: "플라토닉 러브. 속마음을 잘 알 수 없는 연애.\n비밀스러운 관계.\n쏠로연애운♡신중하게 지켜보기만 할 확률 높음", 
@@ -300,7 +300,7 @@ const studyData = [
         hea: "여성 질환, 우울증, 소화 불량 주의."
     },
     {
-        no: "III", name: "여황제 (The Empress)", grade: "메이저 아르카나", 
+        no: "III", name: "여황제\n(The Empress)", grade: "메이저 아르카나", 
         img: "./images/03.jpg", 
         desc: "풍요, 모성애, 여성스러운 매력, 결실, 예술적 감각.\n만물이 생동하는 풍요로운 시기이며, 편안하고 만족스러운 상태를 나타냅니다.", 
         loveMain: "매력이 넘치는 시기.\n편안하고 따뜻한 연애, 임신 가능성.\n쏠로연애운♡주변에서 호감을 보이는 이성이 많아짐", 
@@ -309,7 +309,7 @@ const studyData = [
         hea: "임신 가능성, 여성 질환 주의, 전반적으로 영양 상태가 좋음."
     },
     {
-        no: "IV", name: "황제 (The Emperor)", grade: "메이저 아르카나", 
+        no: "IV", name: "황제\n(The Emperor)", grade: "메이저 아르카나", 
         img: "./images/04.jpg", 
         desc: "권위, 책임감, 통제, 안정, 세속적인 권력.\n강력한 리더십과 카리스마를 상징하며, 이성적이고 현실적인 판단을 내립니다.", 
         loveMain: "가부장적이거나 리드하는 연애.\n책임감은 강하지만 애정 표현이 서툴 수 있음.\n쏠로연애운♡연상이나 능력 있는 사람과의 만남", 
@@ -318,7 +318,7 @@ const studyData = [
         hea: "스트레스성 두통, 심혈관 질환, 과로 유의."
     },
     {
-        no: "V", name: "교황 (The Hierophant)", grade: "메이저 아르카나", 
+        no: "V", name: "교황\n(The Hierophant)", grade: "메이저 아르카나", 
         img: "./images/05.jpg", 
         desc: "전통, 교육, 정신적 지도자, 신뢰, 중재자.\n올바른 길을 안내해주며 전통과 규칙을 따르는 보수적인 성향을 띱니다.", 
         loveMain: "정신적인 교감 중시.\n어른들의 소개나 맞선, 보수적인 연애.\n쏠로연애운♡소개팅이나 모임을 통한 만남", 
@@ -327,7 +327,7 @@ const studyData = [
         hea: "목, 편도선, 갑상선 등 기관지 유의."
     },
     {
-        no: "VI", name: "연인 (The Lovers)", grade: "메이저 아르카나", 
+        no: "VI", name: "연인\n(The Lovers)", grade: "메이저 아르카나", 
         img: "./images/06.jpg", 
         desc: "사랑, 조화, 결합, 올바른 선택, 매력.\n강력한 이끌림과 아름다운 관계를 의미하며, 중요한 선택의 기로에 놓일 수도 있습니다.", 
         loveMain: "강렬한 이끌림과 운명적인 사랑.\n가장 로맨틱하고 행복한 시기.\n쏠로연애운♡눈에 띄는 매력으로 새로운 연인이 생김", 
