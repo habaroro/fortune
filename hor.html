@@ -217,13 +217,13 @@
 
         /* ── 텍스트 ── */
         .detail-text {
-            font-size: 0.97rem; line-height: 1.85;
+            font-size: 1rem; line-height: 1.85;
             color: #4A4A6A; word-break: keep-all;
             white-space: pre-line; margin: 0;
         }
         .section-label {
             display: flex; align-items: center; gap: 7px;
-            font-size: 0.82rem; font-weight: 800;
+            font-size: 1rem; font-weight: 800;
             color: var(--text-gray); letter-spacing: 0.5px; margin-bottom: 12px;
         }
         .section-label::after {
@@ -238,7 +238,7 @@
             border: 1px solid rgba(212,175,55,0.3);
         }
         .love-summary-text {
-            font-size: 0.97rem; line-height: 1.7;
+            font-size: 1rem; line-height: 1.7;
             color: #92600A; font-weight: 700; white-space: pre-line;
         }
         .love-scenarios { display: flex; flex-direction: column; gap: 12px; }
@@ -257,11 +257,11 @@
         .scenario-icon-wrap.breakup{ background: linear-gradient(135deg,#D8E8FF,#A8C8FF); }
         .scenario-body { flex: 1; }
         .scenario-label {
-            font-size: 0.82rem; font-weight: 800;
+            font-size: 0.9rem; font-weight: 800;
             color: var(--text-gray); margin-bottom: 5px; display: block;
         }
         .scenario-text {
-            font-size: 0.93rem; line-height: 1.65;
+            font-size: 1rem; line-height: 1.65;
             color: #4A4A6A; word-break: keep-all;
         }
 
@@ -274,7 +274,7 @@
         }
         .health-icon { font-size: 1.8rem; flex-shrink: 0; }
         .health-text {
-            font-size: 0.95rem; line-height: 1.7;
+            font-size: 1rem; line-height: 1.7;
             color: #1A5A40; font-weight: 700; word-break: keep-all;
         }
 
@@ -285,7 +285,7 @@
             border: 1px solid rgba(66,153,225,0.2);
         }
         .biz-text {
-            font-size: 0.95rem; line-height: 1.75;
+            font-size: 1rem; line-height: 1.75;
             color: #1A365D; font-weight: 700; word-break: keep-all;
         }
 
@@ -1057,13 +1057,13 @@ function makeList() {
 
     const groups = [
         { label: '✦ 특별 카드', filter: d => d.no === '0' },
-        { label: '☀️ 태양 카드 (긍정)', filter: d => d.grade.includes('태양') },
+        { label: '☀️ 태양 카드', filter: d => d.grade.includes('태양') },
         { label: '♀️ 금성 카드', filter: d => d.grade.includes('금성') },
         { label: '☿ 수성 카드', filter: d => d.grade.includes('수성') },
-        { label: '♃ 목성 카드 (긍정)', filter: d => d.grade.includes('목성') },
+        { label: '♃ 목성 카드', filter: d => d.grade.includes('목성') },
         { label: '♂️ 화성 카드', filter: d => d.grade.includes('화성') },
-        { label: '🌛 달 카드 (중립/부정)', filter: d => d.grade.includes('달') },
-        { label: '♄ 토성 카드 (부정)', filter: d => d.grade.includes('토성') },
+        { label: '🌛 달 카드', filter: d => d.grade.includes('달') },
+        { label: '♄ 토성 카드', filter: d => d.grade.includes('토성') },
         { label: '◎ 중립 카드', filter: d => d.grade === '중립' || d.grade === '긍정' },
     ];
 
